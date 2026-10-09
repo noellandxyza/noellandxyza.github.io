@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HYUNJINHub Payment | Secure Key Purchase</title>
+  <meta name="description" content="Official internal payment gateway for HYUNJINHub services." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#0a0a0f',
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'glow': 'glow 3s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            glow: {
+              '0%': { opacity: '0.4' },
+              '100%': { opacity: '0.8' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .glass-card {
+      background: rgba(24, 24, 27, 0.6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.15);
+    }
+
+    .glass-card.selected {
+      border-color: rgba(168, 85, 247, 0.7);
+      box-shadow: 0 0 40px rgba(168, 85, 247, 0.25);
+      background: rgba(88, 28, 135, 0.2);
+    }
+
+    .btn-purple {
+      background: linear-gradient(135deg, #9333ea, #7c3aed);
+      transition: all 0.3s ease;
+    }
+
+    .btn-purple:hover {
+      background: linear-gradient(135deg, #a855f7, #8b5cf6);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-purple:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+    }
+
+    .check-icon {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a0f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4c1d95;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden bg-black text-white selection:bg-purple-500/30">
+
+  <!-- Background effects -->
+  <div class="fixed inset-0 -z-10 bg-[#0a0a0f]">
+    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse-slow"></div>
+    <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] animate-glow"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-900/5 rounded-full blur-[150px]"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 inset-x-0 z-40 h-16 md:h-20 bg-black/60 backdrop-blur-xl border-b border-white/5 px-4 md:px-8 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img 
+        src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" 
+        alt="Logo" 
+        class="w-9 h-9 md:w-10 md:h-10 object-contain"
+        onerror="this.style.display='none'"
+      />
+      <span class="font-bold text-lg md:text-xl tracking-tight">HYUNJINHUB</span>
+    </div>
+    <div class="flex items-center gap-4 md:gap-6 text-sm">
+      <button onclick="showHistory()" class="text-zinc-400 hover:text-white transition-colors hidden sm:block">History</button>
+      <a href="#" class="text-zinc-400 hover:text-white transition-colors">Main Site</a>
+      <div id="nav-user" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm">
+        <span class="w-2 h-2 rounded-full bg-green-400"></span>
+        <span id="nav-username" class="text-zinc-300"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" class="min-h-screen pt-24 pb-16 px-4 md:px-8 opacity-0 pointer-events-none transition-opacity duration-500">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Header -->
+      <div class="text-center mb-12 md:mb-16">
+        <div class="inline-flex items-center justify-center mb-6">
+          <img 
+            src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" 
+            alt="Hyunjin Logo" 
+            class="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+            onerror="this.style.display='none'"
+          />
+        </div>
+        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
+          <span class="bg-gradient-to-r from-white via-purple-100 to-purple-300 bg-clip-text text-transparent">HYUNJINHUB PAYMENT</span>
+        </h1>
+        <p class="text-zinc-400 text-sm md:text-base tracking-widest uppercase">Secure Key Purchase System</p>
+      </div>
+
+      <!-- Pricing Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 mb-10">
+        
+        <!-- 1 Day -->
+        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="1day" data-price="10000" data-label="1 Day Key" onclick="selectPlan(this)">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-zinc-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Starter</div>
+          <div class="space-y-4">
+            <div class="text-center">
+              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">1 Day Key</h3>
+              <div class="mt-2 flex items-baseline justify-center gap-1">
+                <span class="text-sm font-medium text-zinc-500">Rp</span>
+                <span class="text-3xl font-bold tracking-tight text-white">10.000</span>
+              </div>
+              <p class="text-xs text-zinc-500 mt-1">1 Day</p>
+            </div>
+            <ul class="space-y-2.5 pt-4 border-t border-white/5">
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Full Access
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Basic Support
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Basic Updates
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 7 Days -->
+        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="7days" data-price="30000" data-label="7 Days Key" onclick="selectPlan(this)">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Popular</div>
+          <div class="space-y-4">
+            <div class="text-center">
+              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">7 Days Key</h3>
+              <div class="mt-2 flex items-baseline justify-center gap-1">
+                <span class="text-sm font-medium text-zinc-500">Rp</span>
+                <span class="text-3xl font-bold tracking-tight text-white">30.000</span>
+              </div>
+              <p class="text-xs text-zinc-500 mt-1">7 Days</p>
+            </div>
+            <ul class="space-y-2.5 pt-4 border-t border-white/5">
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Full Access
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Priority Support
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                All Updates
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Exclusive Role
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 30 Days -->
+        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="30days" data-price="100000" data-label="30 Days Key" onclick="selectPlan(this)">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Best Value</div>
+          <div class="space-y-4">
+            <div class="text-center">
+              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">30 Days Key</h3>
+              <div class="mt-2 flex items-baseline justify-center gap-1">
+                <span class="text-sm font-medium text-zinc-500">Rp</span>
+                <span class="text-3xl font-bold tracking-tight text-white">100.000</span>
+              </div>
+              <p class="text-xs text-zinc-500 mt-1">30 Days</p>
+            </div>
+            <ul class="space-y-2.5 pt-4 border-t border-white/5">
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Full Access
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                VVIP Support
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                All Updates
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Exclusive Role
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Lifetime -->
+        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="lifetime" data-price="500000" data-label="Lifetime Key" onclick="selectPlan(this)">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Premium</div>
+          <div class="space-y-4">
+            <div class="text-center">
+              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">Lifetime Key</h3>
+              <div class="mt-2 flex items-baseline justify-center gap-1">
+                <span class="text-sm font-medium text-zinc-500">Rp</span>
+                <span class="text-3xl font-bold tracking-tight text-white">500.000</span>
+              </div>
+              <p class="text-xs text-zinc-500 mt-1">Unlimited</p>
+            </div>
+            <ul class="space-y-2.5 pt-4 border-t border-white/5">
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Lifetime Access
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Instant Access
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                VIP updates
+              </li>
+              <li class="flex items-center gap-3 text-xs text-zinc-400">
+                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                Legendary Role
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Continue Button -->
+      <div class="flex justify-center mb-16">
+        <button id="btn-continue" onclick="goToPayment()" disabled class="btn-purple px-10 py-3.5 rounded-full font-semibold text-white text-sm md:text-base disabled:opacity-40">
+          Continue to Payment
+        </button>
+      </div>
+
+      <!-- Stats Footer -->
+      <div class="border-t border-white/5 pt-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-10">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Trusted Service</p>
+            <p class="text-xl font-bold text-white">10k+ Users</p>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Uptime</p>
+            <p class="text-xl font-bold text-white">99.9%</p>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Region</p>
+            <p class="text-xl font-bold text-white">ID Only</p>
+          </div>
+          <div>
+            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Method</p>
+            <p class="text-xl font-bold text-white">DANA</p>
+          </div>
+        </div>
+        <p class="text-center text-[11px] text-zinc-600 tracking-wide">
+          © 2026 HYUNJINHUB INTERNAL PAYMENT SYSTEMS • ALL RIGHTS RESERVED
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Welcome Modal -->
+  <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+    <div class="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-white/10 relative">
+      <!-- Logo -->
+      <div class="flex justify-center mb-6">
+        <img 
+          src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" 
+          alt="Logo" 
+          class="w-14 h-14 object-contain"
+          onerror="this.style.display='none'"
+        />
+      </div>
+
+      <h2 class="text-2xl font-bold text-center mb-1 tracking-tight">SELAMAT DATANG!</h2>
+      <p class="text-center text-xs text-zinc-500 uppercase tracking-widest mb-8">Mempersiapkan Identitas Pengunjung</p>
+
+      <label class="block text-xs text-zinc-400 uppercase tracking-wider mb-2">Siapa Nama / Username Anda?</label>
+      <div class="relative mb-3">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+        <input 
+          id="username-input" 
+          type="text" 
+          placeholder="Masukkan username Anda..." 
+          class="w-full bg-zinc-900/80 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all"
+          autocomplete="off"
+          oninput="validateUsername()"
+          onkeydown="if(event.key==='Enter') submitUsername()"
+        />
+      </div>
+
+      <div id="username-error" class="hidden mb-3 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <span id="error-text">Username harus minimal 2 karakter.</span>
+      </div>
+
+      <button 
+        id="btn-submit-username" 
+        onclick="submitUsername()" 
+        class="btn-purple w-full py-3.5 rounded-xl font-semibold text-sm mb-5"
+      >
+        Lanjutkan ke Beranda
+      </button>
+
+      <!-- Info box -->
+      <div class="rounded-xl bg-zinc-900/50 border border-white/5 p-4">
+        <div class="flex items-start gap-2.5">
+          <span class="text-amber-400 mt-0.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+              <path d="M12 9v4"/><path d="M12 17h.01"/>
+            </svg>
+          </span>
+          <div>
+            <p class="text-[11px] font-semibold text-amber-400/90 uppercase tracking-wider mb-1">Informasi Penting</p>
+            <p class="text-[11px] text-zinc-500 leading-relaxed">
+              Riwayat ini terikat ke browser yang kamu pakai sekarang. Jika kamu berganti browser/perangkat atau membersihkan cookie, riwayat pembelian kamu tidak akan otomatis muncul lagi di perangkat baru.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
+    <div class="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-white/10 relative">
+      <button onclick="closePayment()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+
+      <h2 class="text-xl font-bold text-center mb-1">Konfirmasi Pembayaran</h2>
+      <p class="text-center text-xs text-zinc-500 mb-6">Bayar via DANA untuk menyelesaikan pembelian</p>
+
+      <div class="space-y-3 mb-6">
+        <div class="flex justify-between text-sm">
+          <span class="text-zinc-400">Paket</span>
+          <span id="pay-plan" class="font-medium text-white">-</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-zinc-400">Username</span>
+          <span id="pay-user" class="font-medium text-white">-</span>
+        </div>
+        <div class="flex justify-between text-sm border-t border-white/10 pt-3">
+          <span class="text-zinc-400">Total</span>
+          <span id="pay-total" class="font-bold text-purple-400 text-lg">Rp 0</span>
+        </div>
+      </div>
+
+      <a 
+        id="btn-pay-dana"
+        href="https://m.dana.id/n/link/minta?full_url=https://qr.dana.id/v1/281012012022020339577649"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-purple w-full py-3.5 rounded-xl font-semibold text-sm mb-3 flex items-center justify-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
+        Bayar dengan DANA
+      </a>
+
+      <button onclick="confirmPaid()" class="w-full py-3 rounded-xl font-medium text-sm text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white transition-all mb-3">
+        Saya Sudah Bayar
+      </button>
+      <p class="text-center text-[11px] text-zinc-600">Setelah bayar, klik "Saya Sudah Bayar" lalu hubungi admin untuk verifikasi</p>
+    </div>
+  </div>
+
+  <!-- Success Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] hidden px-6 py-3 rounded-full bg-green-500/20 border border-green-500/40 text-green-300 text-sm font-medium shadow-lg backdrop-blur-md">
+    ✓ Pembayaran dicatat! Hubungi admin untuk verifikasi key.
+  </div>
+
+  <!-- History Modal -->
+  <div id="history-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
+    <div class="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-white/10 relative max-h-[80vh] overflow-y-auto">
+      <button onclick="closeHistory()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <h2 class="text-xl font-bold mb-6">Riwayat Pembelian</h2>
+      <div id="history-list" class="space-y-3">
+        <p class="text-zinc-500 text-sm text-center py-8">Belum ada riwayat pembelian.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedPlan = null;
+    let currentUser = null;
+
+    const DANA_LINK = 'https://m.dana.id/n/link/minta?full_url=https://qr.dana.id/v1/281012012022020339577649';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('HYUNJINhub_username');
+      if (saved && saved.length >= 2) {
+        currentUser = saved;
+        showMain();
+      }
+    });
+
+    function validateUsername() {
+      const input = document.getElementById('username-input');
+      const error = document.getElementById('username-error');
+      const val = input.value.trim();
+      
+      if (val.length > 0 && val.length < 2) {
+        error.classList.remove('hidden');
+        document.getElementById('error-text').textContent = 'Username harus minimal 2 karakter.';
+      } else {
+        error.classList.add('hidden');
+      }
+    }
+
+    function submitUsername() {
+      const input = document.getElementById('username-input');
+      const val = input.value.trim();
+      const error = document.getElementById('username-error');
+
+      if (val.length < 2) {
+        error.classList.remove('hidden');
+        document.getElementById('error-text').textContent = 'Username harus minimal 2 karakter.';
+        input.focus();
+        return;
+      }
+
+      currentUser = val;
+      localStorage.setItem('HYUNJINhub_username', val);
+      showMain();
+    }
+
+    function showMain() {
+      document.getElementById('welcome-modal').classList.add('hidden');
+      const main = document.getElementById('main-content');
+      main.classList.remove('opacity-0', 'pointer-events-none');
+      main.classList.add('opacity-100');
+
+      const navUser = document.getElementById('nav-user');
+      navUser.classList.remove('hidden');
+      navUser.classList.add('flex');
+      document.getElementById('nav-username').textContent = currentUser;
+    }
+
+    function selectPlan(el) {
+      document.querySelectorAll('[data-plan]').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      
+      selectedPlan = {
+        plan: el.dataset.plan,
+        price: parseInt(el.dataset.price),
+        label: el.dataset.label
+      };
+
+      document.getElementById('btn-continue').disabled = false;
+    }
+
+    function goToPayment() {
+      if (!selectedPlan || !currentUser) return;
+
+      document.getElementById('pay-plan').textContent = selectedPlan.label;
+      document.getElementById('pay-user').textContent = currentUser;
+      document.getElementById('pay-total').textContent = 'Rp ' + selectedPlan.price.toLocaleString('id-ID');
+
+      // Update DANA link (same for all, or could customize amount if supported)
+      document.getElementById('btn-pay-dana').href = DANA_LINK;
+
+      const modal = document.getElementById('payment-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closePayment() {
+      const modal = document.getElementById('payment-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmPaid() {
+      const history = JSON.parse(localStorage.getItem('HYUNJINhub_history') || '[]');
+      history.unshift({
+        plan: selectedPlan.label,
+        price: selectedPlan.price,
+        user: currentUser,
+        date: new Date().toLocaleString('id-ID'),
+        status: 'pending'
+      });
+      localStorage.setItem('HYUNJINhub_history', JSON.stringify(history.slice(0, 20)));
+
+      closePayment();
+
+      const toast = document.getElementById('toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }
+
+    function showHistory() {
+      const list = document.getElementById('history-list');
+      const history = JSON.parse(localStorage.getItem('HYUNJINhub_history') || '[]');
+
+      if (history.length === 0) {
+        list.innerHTML = '<p class="text-zinc-500 text-sm text-center py-8">Belum ada riwayat pembelian.</p>';
+      } else {
+        list.innerHTML = history.map(h => `
+          <div class="flex items-center justify-between p-4 rounded-xl bg-zinc-900/60 border border-white/5">
+            <div>
+              <p class="font-medium text-sm text-white">${h.plan}</p>
+              <p class="text-xs text-zinc-500 mt-0.5">${h.date}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm font-semibold text-purple-400">Rp ${h.price.toLocaleString('id-ID')}</p>
+              <p class="text-[10px] text-amber-400 mt-0.5">⏳ Pending</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const modal = document.getElementById('history-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeHistory() {
+      const modal = document.getElementById('history-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    document.getElementById('payment-modal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closePayment();
+    });
+    document.getElementById('history-modal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeHistory();
+    });
+  </script>
+</body>
+</html>
