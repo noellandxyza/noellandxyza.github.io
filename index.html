@@ -131,7 +131,7 @@
           <img 
             src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" 
             alt="Hyunjin Logo" 
-            class="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+            class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-purple-500/40 drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]"
             onerror="this.style.display='none'"
           />
         </div>
@@ -542,7 +542,6 @@
       document.getElementById('pay-user').textContent = currentUser;
       document.getElementById('pay-total').textContent = 'Rp ' + selectedPlan.price.toLocaleString('id-ID');
 
-      // Update DANA link (same for all, or could customize amount if supported)
       document.getElementById('btn-pay-dana').href = DANA_LINK;
 
       const modal = document.getElementById('payment-modal');
