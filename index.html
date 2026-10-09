@@ -1,616 +1,396 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HYUNJINHub Payment | Secure Key Purchase</title>
-  <meta name="description" content="Official internal payment gateway for HYUNJINHub services." />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            dark: '#0a0a0f',
-          },
-          animation: {
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'glow': 'glow 3s ease-in-out infinite alternate',
-          },
-          keyframes: {
-            glow: {
-              '0%': { opacity: '0.4' },
-              '100%': { opacity: '0.8' },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hyunjin Hub</title>
+<link rel="icon" type="image/png" href="logo.png">
+<meta name="description" content="Hyunjin Hub: script untuk Roblox. Ambil key, join Discord, dan lihat harga lisensi.">
+<style>
+  :root{
+    --bg:#0b0b12; --card:#14141f; --line:#26263a; --text:#ecebf5; --muted:#9a98b3;
+    --accent:#e11d48; --accent2:#7c3aed; --ok:#22c55e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
+  nav{position:sticky;top:0;z-index:10;background:rgba(11,11,18,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+  
+  /* Perbaikan Logo Navigasi */
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+  .brand img{width:36px;height:36px;object-fit:contain;display:block;border-radius:8px;background:#000;padding:2px;border:1px solid var(--line)}
+  .brand b span{color:var(--accent)}
 
-    .glass-card {
-      background: rgba(24, 24, 27, 0.6);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
+  /* Perbaikan Logo Hero */
+  .hero-logo{width:140px;height:140px;object-fit:contain;display:block;margin:0 auto 16px;border-radius:20px;background:#000;padding:8px;border:1px solid var(--line);filter:drop-shadow(0 0 22px rgba(225,29,72,.35))}
 
-    .glass-card:hover {
-      border-color: rgba(168, 85, 247, 0.4);
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.15);
-    }
+  .menu-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+  .menu-btn:hover{border-color:var(--accent)}
+  .menu-btn svg{width:22px;height:22px}
+  .menu-btn .x{display:none}
+  .menu-btn[aria-expanded="true"] .x{display:block}
+  .menu-btn[aria-expanded="true"] .bars{display:none}
+  .menu-wrap{position:relative}
+  .menu{position:absolute;right:0;top:calc(100% + 10px);min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.5);opacity:0;visibility:hidden;transform:translateY(-6px);transition:.15s}
+  .menu.open{opacity:1;visibility:visible;transform:none}
+  .menu a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;font-size:15px;color:var(--text)}
+  .menu a:hover{background:rgba(255,255,255,.05)}
+  .menu a svg{width:19px;height:19px;color:var(--accent);flex-shrink:0}
+  .hero{padding:70px 0 40px;text-align:center;background:radial-gradient(600px 300px at 50% 0,rgba(225,29,72,.22),transparent 70%)}
+  .badge{display:inline-block;font-size:12px;padding:4px 12px;border:1px solid var(--line);border-radius:99px;color:var(--muted);margin-bottom:18px}
+  h1{font-size:clamp(32px,7vw,54px);line-height:1.1;margin-bottom:14px}
+  h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--muted);max-width:520px;margin:0 auto 26px}
+  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--card);cursor:pointer;color:var(--text);transition:.15s}
+  .btn:hover{transform:translateY(-2px);border-color:var(--accent)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0}
+  section{padding:46px 0}
+  h2{font-size:26px;margin-bottom:6px}
+  .sub{color:var(--muted);margin-bottom:22px;font-size:15px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .code{position:relative;background:#07070c;border:1px solid var(--line);border-radius:10px;padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#c9f7d6;word-break:break-all;margin-bottom:14px}
+  .steps{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:6px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .step b{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--accent);align-items:center;justify-content:center;font-size:13px;margin-bottom:8px}
+  .step p{font-size:14px;color:var(--muted)}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(205px,1fr))}
+  .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column}
+  .plan.hot{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .plan h3{font-size:18px}
+  .price{font-size:26px;font-weight:800;margin:10px 0;line-height:1.2}
+  .price small{display:block;font-size:13px;color:var(--muted);font-weight:500}
+  .plan ul{list-style:none;margin:8px 0 20px;color:var(--muted);font-size:14px;flex:1}
+  .plan li{padding:4px 0}
+  .plan li::before{content:"✓ ";color:var(--ok)}
+  .note{margin-top:18px;font-size:13px;color:var(--muted)}
 
-    .glass-card.selected {
-      border-color: rgba(168, 85, 247, 0.7);
-      box-shadow: 0 0 40px rgba(168, 85, 247, 0.25);
-      background: rgba(88, 28, 135, 0.2);
-    }
+  /* Game support */
+  .game-img{position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#3b0a1c,#2a1160);display:flex;align-items:center;justify-content:center}
+  .game-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .game-img .ph{font-weight:800;text-align:center;padding:12px;font-size:20px;line-height:1.2}
+  .game h3{font-size:22px;margin-bottom:4px}
+  .tag{display:inline-block;font-size:12px;background:rgba(34,197,94,.15);color:var(--ok);border:1px solid rgba(34,197,94,.4);padding:2px 10px;border-radius:99px;margin-bottom:10px}
+  .game p{color:var(--muted);font-size:14px;margin-bottom:14px}
 
-    .btn-purple {
-      background: linear-gradient(135deg, #9333ea, #7c3aed);
-      transition: all 0.3s ease;
-    }
+  /* Fitur (scroll) */
+  .game-wrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .game{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center}
+  .features{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  .features h4{font-size:15px;margin-bottom:10px}
+  .feat-list{max-height:360px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;background:#0d0d16;scrollbar-width:thin;scrollbar-color:var(--accent) transparent;overscroll-behavior:contain}
+  .feat-list::-webkit-scrollbar{width:8px}
+  .feat-list::-webkit-scrollbar-thumb{background:var(--accent);border-radius:8px}
+  .fgroup h5{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text);background:#17172a;border-bottom:1px solid var(--line);border-top:1px solid var(--line)}
+  .fgroup:first-child h5{border-top:0}
+  .fgroup h5 em{font-style:normal;font-size:11px;letter-spacing:0;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:0 8px;border-radius:99px}
+  .fgroup ul{list-style:none;padding:4px 6px 8px}
+  .fgroup li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 8px;font-size:14px;border-radius:8px}
+  .fgroup li:hover{background:rgba(255,255,255,.03)}
+  .fgroup li .fn::before{content:"✓";color:var(--ok);font-weight:700;margin-right:9px}
+  .subs{display:flex;flex-wrap:wrap;gap:5px;margin-left:24px;width:100%}
+  .subs i{font-style:normal;font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:1px 9px;border-radius:99px}
 
-    .btn-purple:hover {
-      background: linear-gradient(135deg, #a855f7, #8b5cf6);
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
-      transform: translateY(-1px);
-    }
+  /* Beli */
+  .buy{display:flex;flex-direction:column;gap:8px}
+  .buy .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;font-size:14px;font-weight:700;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+  .buy .bi{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+  .btn.wa{background:#25D366;border:0;color:#fff}
+  .btn.wa:hover,.btn.dc:hover{filter:brightness(1.1)}
+  .btn.dc{background:#5865F2;border:0;color:#fff}
 
-    .btn-purple:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+  /* Sosial (ikon saja, berjejer ke samping) */
+  .socials{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:nowrap}
+  .soc{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;transition:.15s;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .soc:hover{transform:translateY(-4px) scale(1.05)}
+  .soc svg{width:36px;height:36px;display:block}
+  .soc.discord{background:#5865F2}
+  .soc.tiktok{background:#000;border:1px solid #2a2a2a}
+  .soc.whatsapp{background:#25D366}
 
-    .modal-backdrop {
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(8px);
-    }
-
-    .check-icon {
-      background: rgba(168, 85, 247, 0.2);
-      color: #c084fc;
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0a0a0f;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #4c1d95;
-      border-radius: 3px;
-    }
-  </style>
+  footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--muted);font-size:13px}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ok);color:#04130a;padding:10px 18px;border-radius:10px;font-weight:600;transition:.25s;z-index:20}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  @media(max-width:640px){
+    .soc{width:56px;height:56px}.socials{gap:14px}
+    .game{grid-template-columns:1fr}
+    .game-img{max-width:240px;margin:0 auto}
+  }
+</style>
 </head>
-<body class="min-h-screen overflow-x-hidden bg-black text-white selection:bg-purple-500/30">
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ic-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol><symbol id="ic-dc" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol></svg>
 
-  <!-- Background effects -->
-  <div class="fixed inset-0 -z-10 bg-[#0a0a0f]">
-    <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-    <div class="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] animate-glow"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-900/5 rounded-full blur-[150px]"></div>
-  </div>
-
-  <!-- Navbar -->
-  <nav class="fixed top-0 inset-x-0 z-40 h-16 md:h-20 bg-black/60 backdrop-blur-xl border-b border-white/5 px-4 md:px-8 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <img 
-        src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" 
-        alt="Logo" 
-        class="w-9 h-9 md:w-10 md:h-10 object-contain"
-        onerror="this.style.display='none'"
-      />
-      <span class="font-bold text-lg md:text-xl tracking-tight">HYUNJINHUB</span>
-    </div>
-    <div class="flex items-center gap-4 md:gap-6 text-sm">
-      <button onclick="showHistory()" class="text-zinc-400 hover:text-white transition-colors hidden sm:block">History</button>
-      <a href="#" class="text-zinc-400 hover:text-white transition-colors">Main Site</a>
-      <div id="nav-user" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm">
-        <span class="w-2 h-2 rounded-full bg-green-400"></span>
-        <span id="nav-username" class="text-zinc-300"></span>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <main id="main-content" class="min-h-screen pt-24 pb-16 px-4 md:px-8 opacity-0 pointer-events-none transition-opacity duration-500">
-    <div class="max-w-6xl mx-auto">
-      
-      <!-- Header -->
-      <div class="text-center mb-12 md:mb-16">
-        <div class="inline-flex items-center justify-center mb-6">
-          <img 
-            src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" 
-            alt="Hyunjin Logo" 
-            class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-purple-500/40 drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]"
-            onerror="this.style.display='none'"
-          />
-        </div>
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-3">
-          <span class="bg-gradient-to-r from-white via-purple-100 to-purple-300 bg-clip-text text-transparent">HYUNJINHUB PAYMENT</span>
-        </h1>
-        <p class="text-zinc-400 text-sm md:text-base tracking-widest uppercase">Secure Key Purchase System</p>
-      </div>
-
-      <!-- Pricing Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 mb-10">
-        
-        <!-- 1 Day -->
-        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="1day" data-price="10000" data-label="1 Day Key" onclick="selectPlan(this)">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-zinc-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Starter</div>
-          <div class="space-y-4">
-            <div class="text-center">
-              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">1 Day Key</h3>
-              <div class="mt-2 flex items-baseline justify-center gap-1">
-                <span class="text-sm font-medium text-zinc-500">Rp</span>
-                <span class="text-3xl font-bold tracking-tight text-white">10.000</span>
-              </div>
-              <p class="text-xs text-zinc-500 mt-1">1 Day</p>
-            </div>
-            <ul class="space-y-2.5 pt-4 border-t border-white/5">
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Full Access
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Basic Support
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Basic Updates
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- 7 Days -->
-        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="7days" data-price="30000" data-label="7 Days Key" onclick="selectPlan(this)">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Popular</div>
-          <div class="space-y-4">
-            <div class="text-center">
-              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">7 Days Key</h3>
-              <div class="mt-2 flex items-baseline justify-center gap-1">
-                <span class="text-sm font-medium text-zinc-500">Rp</span>
-                <span class="text-3xl font-bold tracking-tight text-white">30.000</span>
-              </div>
-              <p class="text-xs text-zinc-500 mt-1">7 Days</p>
-            </div>
-            <ul class="space-y-2.5 pt-4 border-t border-white/5">
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Full Access
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Priority Support
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                All Updates
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Exclusive Role
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- 30 Days -->
-        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="30days" data-price="100000" data-label="30 Days Key" onclick="selectPlan(this)">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Best Value</div>
-          <div class="space-y-4">
-            <div class="text-center">
-              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">30 Days Key</h3>
-              <div class="mt-2 flex items-baseline justify-center gap-1">
-                <span class="text-sm font-medium text-zinc-500">Rp</span>
-                <span class="text-3xl font-bold tracking-tight text-white">100.000</span>
-              </div>
-              <p class="text-xs text-zinc-500 mt-1">30 Days</p>
-            </div>
-            <ul class="space-y-2.5 pt-4 border-t border-white/5">
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Full Access
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                VVIP Support
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                All Updates
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Exclusive Role
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Lifetime -->
-        <div class="relative p-6 rounded-2xl transition-all duration-500 glass-card group cursor-pointer" data-plan="lifetime" data-price="500000" data-label="Lifetime Key" onclick="selectPlan(this)">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white shadow-lg">Premium</div>
-          <div class="space-y-4">
-            <div class="text-center">
-              <h3 class="text-lg font-semibold transition-colors text-zinc-300 group-hover:text-white">Lifetime Key</h3>
-              <div class="mt-2 flex items-baseline justify-center gap-1">
-                <span class="text-sm font-medium text-zinc-500">Rp</span>
-                <span class="text-3xl font-bold tracking-tight text-white">500.000</span>
-              </div>
-              <p class="text-xs text-zinc-500 mt-1">Unlimited</p>
-            </div>
-            <ul class="space-y-2.5 pt-4 border-t border-white/5">
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Lifetime Access
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Instant Access
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                VIP updates
-              </li>
-              <li class="flex items-center gap-3 text-xs text-zinc-400">
-                <div class="p-0.5 rounded-full check-icon flex-shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                Legendary Role
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- Continue Button -->
-      <div class="flex justify-center mb-16">
-        <button id="btn-continue" onclick="goToPayment()" disabled class="btn-purple px-10 py-3.5 rounded-full font-semibold text-white text-sm md:text-base disabled:opacity-40">
-          Continue to Payment
-        </button>
-      </div>
-
-      <!-- Stats Footer -->
-      <div class="border-t border-white/5 pt-10">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-10">
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Trusted Service</p>
-            <p class="text-xl font-bold text-white">10k+ Users</p>
-          </div>
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Uptime</p>
-            <p class="text-xl font-bold text-white">99.9%</p>
-          </div>
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Region</p>
-            <p class="text-xl font-bold text-white">ID Only</p>
-          </div>
-          <div>
-            <p class="text-[10px] uppercase tracking-widest text-zinc-500 mb-1">Method</p>
-            <p class="text-xl font-bold text-white">DANA</p>
-          </div>
-        </div>
-        <p class="text-center text-[11px] text-zinc-600 tracking-wide">
-          © 2026 HYUNJINHUB INTERNAL PAYMENT SYSTEMS • ALL RIGHTS RESERVED
-        </p>
-      </div>
-    </div>
-  </main>
-
-  <!-- Welcome Modal -->
-  <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
-    <div class="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-white/10 relative">
-      <!-- Logo -->
-      <div class="flex justify-center mb-6">
-        <img 
-          src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" 
-          alt="Logo" 
-          class="w-14 h-14 object-contain"
-          onerror="this.style.display='none'"
-        />
-      </div>
-
-      <h2 class="text-2xl font-bold text-center mb-1 tracking-tight">SELAMAT DATANG!</h2>
-      <p class="text-center text-xs text-zinc-500 uppercase tracking-widest mb-8">Mempersiapkan Identitas Pengunjung</p>
-
-      <label class="block text-xs text-zinc-400 uppercase tracking-wider mb-2">Siapa Nama / Username Anda?</label>
-      <div class="relative mb-3">
-        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </span>
-        <input 
-          id="username-input" 
-          type="text" 
-          placeholder="Masukkan username Anda..." 
-          class="w-full bg-zinc-900/80 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/50 transition-all"
-          autocomplete="off"
-          oninput="validateUsername()"
-          onkeydown="if(event.key==='Enter') submitUsername()"
-        />
-      </div>
-
-      <div id="username-error" class="hidden mb-3 px-4 py-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-        <span id="error-text">Username harus minimal 2 karakter.</span>
-      </div>
-
-      <button 
-        id="btn-submit-username" 
-        onclick="submitUsername()" 
-        class="btn-purple w-full py-3.5 rounded-xl font-semibold text-sm mb-5"
-      >
-        Lanjutkan ke Beranda
+<nav>
+  <div class="wrap">
+    <a href="#" class="brand"><img src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" alt="Hyunjin Hub logo"><b>HYUNJIN<span>HUB</span></b></a>
+    <div class="menu-wrap">
+      <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+        <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
-
-      <!-- Info box -->
-      <div class="rounded-xl bg-zinc-900/50 border border-white/5 p-4">
-        <div class="flex items-start gap-2.5">
-          <span class="text-amber-400 mt-0.5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
-              <path d="M12 9v4"/><path d="M12 17h.01"/>
-            </svg>
-          </span>
-          <div>
-            <p class="text-[11px] font-semibold text-amber-400/90 uppercase tracking-wider mb-1">Informasi Penting</p>
-            <p class="text-[11px] text-zinc-500 leading-relaxed">
-              Riwayat ini terikat ke browser yang kamu pakai sekarang. Jika kamu berganti browser/perangkat atau membersihkan cookie, riwayat pembelian kamu tidak akan otomatis muncul lagi di perangkat baru.
-            </p>
-          </div>
-        </div>
+      <div class="menu" id="menu">
+        <a href="#script"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg> Script</a>
+        <a href="#game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10v5M4.5 12.5h5M16 11h.01M18.5 14h.01"/></svg> Game</a>
+        <a href="#harga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg> Harga</a>
+        <a href="#kontak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18 14.3c2.2.6 3.5 2.5 3.5 5.7"/></svg> Sosial</a>
       </div>
     </div>
   </div>
+</nav>
 
-  <!-- Payment Modal -->
-  <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
-    <div class="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-white/10 relative">
-      <button onclick="closePayment()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
+<header class="hero">
+  <div class="wrap">
+    <img class="hero-logo" src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" alt="Hyunjin Hub">
+    <span class="badge">Roblox Script</span>
+    <h1>Hyunjin <em>Hub</em></h1>
+    <p>Script untuk Roblox. Ambil key, salin script, lalu jalankan di executor kamu.</p>
+    <div class="btns">
+      <a class="btn primary" href="#script">Ambil Script</a>
+      <a class="btn" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener">Join Discord</a>
+    </div>
+  </div>
+</header>
 
-      <h2 class="text-xl font-bold text-center mb-1">Konfirmasi Pembayaran</h2>
-      <p class="text-center text-xs text-zinc-500 mb-6">Bayar via DANA untuk menyelesaikan pembelian</p>
+<section id="script">
+  <div class="wrap">
+    <h2>Script</h2>
+    <p class="sub">Salin script di bawah, tempel di executor, lalu masukkan key.</p>
+    <div class="card">
+      <div class="code" id="scriptBox">loadstring(game:HttpGet("https://raw.githubusercontent.com/noellandxyza/noellandxyza.vd/refs/heads/main/Hyunjin.Hub"))()</div>
+      <div class="btns" style="justify-content:flex-start">
+        <button class="btn primary" id="copyBtn">Salin Script</button>
+        <a class="btn" id="keyLink" href="https://GANTI-LINK-JNKEY-KAMU" target="_blank" rel="noopener">Key</a>
+      </div>
+    </div>
 
-      <div class="space-y-3 mb-6">
-        <div class="flex justify-between text-sm">
-          <span class="text-zinc-400">Paket</span>
-          <span id="pay-plan" class="font-medium text-white">-</span>
+    <div class="steps">
+      <div class="step"><b>1</b><p>Klik <strong>Key</strong> dan selesaikan langkahnya untuk mendapat key.</p></div>
+      <div class="step"><b>2</b><p>Salin script dengan tombol <strong>Salin Script</strong>.</p></div>
+      <div class="step"><b>3</b><p>Buka Violence District, tempel script di executor, lalu execute.</p></div>
+      <div class="step"><b>4</b><p>Masukkan key saat diminta dan nikmati fiturnya.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="game">
+  <div class="wrap">
+    <h2>Game Support</h2>
+    <p class="sub">Game yang didukung oleh Hyunjin Hub.</p>
+    <div class="game-wrap">
+      <div class="game">
+        <div class="game-img">
+          <div class="ph">Violence<br>District</div>
+          <!-- Taruh gambar sendiri bernama game.jpg di folder yang sama untuk dipakai lebih dulu -->
+          <img id="gameImg" src="game.jpg" alt="Violence District" onerror="loadRobloxIcon(this)">
         </div>
-        <div class="flex justify-between text-sm">
-          <span class="text-zinc-400">Username</span>
-          <span id="pay-user" class="font-medium text-white">-</span>
-        </div>
-        <div class="flex justify-between text-sm border-t border-white/10 pt-3">
-          <span class="text-zinc-400">Total</span>
-          <span id="pay-total" class="font-bold text-purple-400 text-lg">Rp 0</span>
+        <div>
+          <span class="tag">● Supported</span>
+          <h3>Violence District</h3>
+          <p>Script Hyunjin Hub berjalan di game Violence District di Roblox.</p>
+          <a class="btn primary" href="https://www.roblox.com/games/93978595733734" target="_blank" rel="noopener">Buka Game</a>
         </div>
       </div>
 
-      <a 
-        id="btn-pay-dana"
-        href="https://m.dana.id/n/link/minta?full_url=https://qr.dana.id/v1/281012012022020339577649"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-purple w-full py-3.5 rounded-xl font-semibold text-sm mb-3 flex items-center justify-center gap-2"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
-        Bayar dengan DANA
+      <div class="features">
+        <h4>Fitur</h4>
+        <!-- Edit fitur: tiap kategori = satu <div class="fgroup">. Tambah/hapus baris <li> sesuka hati. -->
+        <div class="feat-list" tabindex="0" aria-label="Daftar fitur">
+  <div class="fgroup"><h5>ESP / Visual <em>20</em></h5><ul>
+    <li><span class="fn">Player Highlight ESP</span><span class="subs"><i>Survivor</i><i>Killer</i><i>Spectator</i><i>Survivor Items</i><i>Nametags</i><i>Distance ESP</i></span></li>
+    <li><span class="fn">World Highlight ESP</span><span class="subs"><i>Generators (dengan progress)</i><i>Hooks</i><i>Gates</i><i>Pallets</i><i>Windows</i><i>SCP / Zombie</i></span></li>
+    <li><span class="fn">Window ESP (terpisah)</span></li>
+    <li><span class="fn">Crosshair (Dot / Plus / X / Box)</span></li>
+    <li><span class="fn">Fullbright</span></li>
+    <li><span class="fn">No Fog</span></li>
+    <li><span class="fn">Weather Themes (Christmas, Heavy Rain, Autumn, Cherry Blossom, Sunset, Blood Moon, Toxic Wasteland, Vaporwave, Midnight, dll)</span></li>
+    <li><span class="fn">Radar (ukuran, range, transparency, circle mode + filter Killer/Survivor/Generator/Pallet/Hook/Gate/Window/Zombie)</span></li>
+    <li><span class="fn">Spectator Counter</span></li>
+    <li><span class="fn">Killer Display (KystKiller)</span></li>
+    <li><span class="fn">Killer Perks Display</span></li>
+    <li><span class="fn">Predict Map</span></li>
+    <li><span class="fn">Hide Survivor Icon</span></li>
+    <li><span class="fn">Show Ping &amp; FPS</span></li>
+    <li><span class="fn">Show Hook Counter</span></li>
+    <li><span class="fn">First Person Camera (Survivor)</span></li>
+    <li><span class="fn">Camera FOV</span></li>
+    <li><span class="fn">Third Person (Killer)</span></li>
+    <li><span class="fn">Shift Lock</span></li>
+    <li><span class="fn">Infinity Zoom</span></li>
+  </ul></div>
+  <div class="fgroup"><h5>Movement <em>11</em></h5><ul>
+    <li><span class="fn">Speed Hack</span></li>
+    <li><span class="fn">Jump Hack</span></li>
+    <li><span class="fn">Infinite Jump</span></li>
+    <li><span class="fn">Noclip</span></li>
+    <li><span class="fn">Moonwalk (dengan zigzag &amp; boost)</span></li>
+    <li><span class="fn">Target Lock / Aim Lock</span></li>
+    <li><span class="fn">Invisible Not Visual</span></li>
+    <li><span class="fn">Anti AFK</span></li>
+    <li><span class="fn">Bypass Gate</span></li>
+    <li><span class="fn">Anti Fall Damage</span></li>
+    <li><span class="fn">Fling (Nearest / All)</span></li>
+  </ul></div>
+  <div class="fgroup"><h5>Survivor <em>17</em></h5><ul>
+    <li><span class="fn">Auto Skillcheck</span></li>
+    <li><span class="fn">Hide Skillcheck UI</span></li>
+    <li><span class="fn">Auto Leave Generator</span></li>
+    <li><span class="fn">Auto Attack</span></li>
+    <li><span class="fn">Hitbox Expand</span></li>
+    <li><span class="fn">Twist of Fate Silent Aim (+ laser, wallcheck, dll)</span></li>
+    <li><span class="fn">Flashlight Silent Aim (+ laser)</span></li>
+    <li><span class="fn">Flee Killer</span></li>
+    <li><span class="fn">Swift Vault / Auto Vault</span></li>
+    <li><span class="fn">Auto Pallet (Pallet Reflex)</span></li>
+    <li><span class="fn">Auto Parry (+ show range circle)</span></li>
+    <li><span class="fn">Fake Parry</span></li>
+    <li><span class="fn">Fake Generator</span></li>
+    <li><span class="fn">Anti Knock</span></li>
+    <li><span class="fn">Auto Dodge Spear</span></li>
+    <li><span class="fn">Survivor Killer Warning</span></li>
+    <li><span class="fn">Beat Survivor (auto exit / finish)</span></li>
+  </ul></div>
+  <div class="fgroup"><h5>Killer <em>15</em></h5><ul>
+    <li><span class="fn">Destroy Pallets</span></li>
+    <li><span class="fn">No Pallet Stun / Remove Palletwrong</span></li>
+    <li><span class="fn">Auto Hook</span></li>
+    <li><span class="fn">Auto Kick / Break Generator</span></li>
+    <li><span class="fn">Block All Vaults</span></li>
+    <li><span class="fn">Block / Auto Drop Pallets</span></li>
+    <li><span class="fn">Bypass Cooldown (Abyssal Burst, Hidden Leap, Veil, Lake Mist, Pursuit, dll)</span></li>
+    <li><span class="fn">Anti Blind (Flashlight)</span></li>
+    <li><span class="fn">No Slowdown</span></li>
+    <li><span class="fn">Custom Masked</span></li>
+    <li><span class="fn">Fake Attack (Counter Parry)</span></li>
+    <li><span class="fn">Infinite Skills / Frenzy</span></li>
+    <li><span class="fn">Spear Aimbot (manual target cycle)</span></li>
+    <li><span class="fn">Silent Aim Flask</span></li>
+    <li><span class="fn">Beat Killer (auto chase &amp; attack)</span></li>
+  </ul></div>
+  <div class="fgroup"><h5>Aimbot <em>3</em></h5><ul>
+    <li><span class="fn">Aimbot (Survivor → Killer) + FOV circle, visibility check, prediction, smoothness</span></li>
+    <li><span class="fn">Spear Aimbot (Killer)</span></li>
+    <li><span class="fn">Silent Aim (ToF &amp; Flashlight)</span></li>
+  </ul></div>
+  <div class="fgroup"><h5>Teleport / Utility <em>6</em></h5><ul>
+    <li><span class="fn">Teleport to Player</span></li>
+    <li><span class="fn">Teleport to Generator</span></li>
+    <li><span class="fn">Teleport to Gate</span></li>
+    <li><span class="fn">Teleport to Hook</span></li>
+    <li><span class="fn">Config Save / Load / Delete</span></li>
+    <li><span class="fn">ALT Cursor Unlock (PC)</span></li>
+  </ul></div>
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="harga">
+  <div class="wrap">
+    <h2>Harga Lisensi</h2>
+    <p class="sub">Pilih lisensi tanpa key system. Beli lewat WhatsApp atau Discord.</p>
+    <div class="grid">
+      <div class="plan">
+        <h3>Harian</h3>
+        <div class="price">Rp 10.000 <small>/ 1 hari</small></div>
+        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li></ul>
+        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Harian" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+      </div>
+      <div class="plan hot">
+        <h3>Mingguan</h3>
+        <div class="price">Rp 30.000 <small>/ 7 hari</small></div>
+        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li><li>Support prioritas</li></ul>
+        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Mingguan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+      </div>
+      <div class="plan">
+        <h3>Bulanan</h3>
+        <div class="price">Rp 100.000 <small>/ 30 hari</small></div>
+        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li><li>Support prioritas</li></ul>
+        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Bulanan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+      </div>
+      <div class="plan">
+        <h3>Permanen</h3>
+        <div class="price">Rp 500.000 <small>/ selamanya</small></div>
+        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update seumur hidup</li><li>Support prioritas</li></ul>
+        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Permanen" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kontak">
+  <div class="wrap">
+    <div class="socials">
+      <a class="soc discord" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener" aria-label="Grup Discord" title="Grup Discord">
+        <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
       </a>
-
-      <button onclick="confirmPaid()" class="w-full py-3 rounded-xl font-medium text-sm text-zinc-400 border border-white/10 hover:border-white/20 hover:text-white transition-all mb-3">
-        Saya Sudah Bayar
-      </button>
-      <p class="text-center text-[11px] text-zinc-600">Setelah bayar, klik "Saya Sudah Bayar" lalu hubungi admin untuk verifikasi</p>
+      <a class="soc tiktok" href="https://www.tiktok.com/@noelandxyza" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path transform="translate(-.9 -.9)" fill="#25F4EE" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+          <path transform="translate(.9 .9)" fill="#FE2C55" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+          <path fill="#fff" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+      </a>
+      <a class="soc whatsapp" href="https://whatsapp.com/channel/0029VakIqEBGZNCmoLAA4X3C" target="_blank" rel="noopener" aria-label="Saluran WhatsApp" title="Saluran WhatsApp">
+        <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      </a>
     </div>
   </div>
+</section>
 
-  <!-- Success Toast -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] hidden px-6 py-3 rounded-full bg-green-500/20 border border-green-500/40 text-green-300 text-sm font-medium shadow-lg backdrop-blur-md">
-    ✓ Pembayaran dicatat! Hubungi admin untuk verifikasi key.
+<footer>
+  <div class="wrap">
+    © <span id="yr"></span> Hyunjin Hub. Tidak berafiliasi dengan Roblox Corporation. Gunakan dengan risiko sendiri.
   </div>
+</footer>
 
-  <!-- History Modal -->
-  <div id="history-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop">
-    <div class="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl border border-white/10 relative max-h-[80vh] overflow-y-auto">
-      <button onclick="closeHistory()" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
-      <h2 class="text-xl font-bold mb-6">Riwayat Pembelian</h2>
-      <div id="history-list" class="space-y-3">
-        <p class="text-zinc-500 text-sm text-center py-8">Belum ada riwayat pembelian.</p>
-      </div>
-    </div>
-  </div>
+<div class="toast" id="toast">Script disalin!</div>
 
-  <script>
-    let selectedPlan = null;
-    let currentUser = null;
+<script>
 
-    const DANA_LINK = 'https://m.dana.id/n/link/minta?full_url=https://qr.dana.id/v1/281012012022020339577649';
+  // Menu navigasi
+  var mBtn=document.getElementById('menuBtn'), menu=document.getElementById('menu');
+  function setMenu(o){menu.classList.toggle('open',o);mBtn.setAttribute('aria-expanded',o);}
+  mBtn.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'));});
+  menu.addEventListener('click',function(){setMenu(false);});
+  document.addEventListener('click',function(e){if(!menu.contains(e.target))setMenu(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('HYUNJINhub_username');
-      if (saved && saved.length >= 2) {
-        currentUser = saved;
-        showMain();
-      }
-    });
+  document.getElementById('yr').textContent = new Date().getFullYear();
 
-    function validateUsername() {
-      const input = document.getElementById('username-input');
-      const error = document.getElementById('username-error');
-      const val = input.value.trim();
-      
-      if (val.length > 0 && val.length < 2) {
-        error.classList.remove('hidden');
-        document.getElementById('error-text').textContent = 'Username harus minimal 2 karakter.';
-      } else {
-        error.classList.add('hidden');
-      }
+  // Salin script
+  var toast = document.getElementById('toast');
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var text = document.getElementById('scriptBox').textContent.trim();
+    var done = function () {
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done);
+    } else {
+      var t = document.createElement('textarea');
+      t.value = text; document.body.appendChild(t); t.select();
+      document.execCommand('copy'); document.body.removeChild(t); done();
     }
+  });
 
-    function submitUsername() {
-      const input = document.getElementById('username-input');
-      const val = input.value.trim();
-      const error = document.getElementById('username-error');
-
-      if (val.length < 2) {
-        error.classList.remove('hidden');
-        document.getElementById('error-text').textContent = 'Username harus minimal 2 karakter.';
-        input.focus();
-        return;
-      }
-
-      currentUser = val;
-      localStorage.setItem('HYUNJINhub_username', val);
-      showMain();
-    }
-
-    function showMain() {
-      document.getElementById('welcome-modal').classList.add('hidden');
-      const main = document.getElementById('main-content');
-      main.classList.remove('opacity-0', 'pointer-events-none');
-      main.classList.add('opacity-100');
-
-      const navUser = document.getElementById('nav-user');
-      navUser.classList.remove('hidden');
-      navUser.classList.add('flex');
-      document.getElementById('nav-username').textContent = currentUser;
-    }
-
-    function selectPlan(el) {
-      document.querySelectorAll('[data-plan]').forEach(c => c.classList.remove('selected'));
-      el.classList.add('selected');
-      
-      selectedPlan = {
-        plan: el.dataset.plan,
-        price: parseInt(el.dataset.price),
-        label: el.dataset.label
-      };
-
-      document.getElementById('btn-continue').disabled = false;
-    }
-
-    function goToPayment() {
-      if (!selectedPlan || !currentUser) return;
-
-      document.getElementById('pay-plan').textContent = selectedPlan.label;
-      document.getElementById('pay-user').textContent = currentUser;
-      document.getElementById('pay-total').textContent = 'Rp ' + selectedPlan.price.toLocaleString('id-ID');
-
-      document.getElementById('btn-pay-dana').href = DANA_LINK;
-
-      const modal = document.getElementById('payment-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closePayment() {
-      const modal = document.getElementById('payment-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    function confirmPaid() {
-      const history = JSON.parse(localStorage.getItem('HYUNJINhub_history') || '[]');
-      history.unshift({
-        plan: selectedPlan.label,
-        price: selectedPlan.price,
-        user: currentUser,
-        date: new Date().toLocaleString('id-ID'),
-        status: 'pending'
-      });
-      localStorage.setItem('HYUNJINhub_history', JSON.stringify(history.slice(0, 20)));
-
-      closePayment();
-
-      const toast = document.getElementById('toast');
-      toast.classList.remove('hidden');
-      setTimeout(() => toast.classList.add('hidden'), 4000);
-    }
-
-    function showHistory() {
-      const list = document.getElementById('history-list');
-      const history = JSON.parse(localStorage.getItem('HYUNJINhub_history') || '[]');
-
-      if (history.length === 0) {
-        list.innerHTML = '<p class="text-zinc-500 text-sm text-center py-8">Belum ada riwayat pembelian.</p>';
-      } else {
-        list.innerHTML = history.map(h => `
-          <div class="flex items-center justify-between p-4 rounded-xl bg-zinc-900/60 border border-white/5">
-            <div>
-              <p class="font-medium text-sm text-white">${h.plan}</p>
-              <p class="text-xs text-zinc-500 mt-0.5">${h.date}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-sm font-semibold text-purple-400">Rp ${h.price.toLocaleString('id-ID')}</p>
-              <p class="text-[10px] text-amber-400 mt-0.5">⏳ Pending</p>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      const modal = document.getElementById('history-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeHistory() {
-      const modal = document.getElementById('history-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    document.getElementById('payment-modal').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) closePayment();
-    });
-    document.getElementById('history-modal').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) closeHistory();
-    });
-  </script>
+  // Gambar game: pakai game.jpg kalau ada, kalau tidak ambil ikon game dari Roblox
+  function loadRobloxIcon(img) {
+    img.onerror = null;
+    var url = 'https://thumbnails.roproxy.com/v1/places/gameicons?placeIds=93978595733734&returnPolicy=PlaceHolder&size=512x512&format=Png&isCircular=false';
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var u = j && j.data && j.data[0] && j.data[0].imageUrl;
+        if (u) { img.src = u; } else { img.style.display = 'none'; }
+      })
+      .catch(function () { img.style.display = 'none'; });
+  }
+</script>
 </body>
 </html>
