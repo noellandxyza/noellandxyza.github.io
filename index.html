@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hyunjin Hub</title>
 <link rel="icon" type="image/png" href="logo.png">
-<meta name="description" content="Hyunjin Hub: script untuk Roblox. Ambil key, join Discord, dan lihat harga lisensi.">
+<meta name="description" content="Selamat datang di Hyunjin Hub! Temukan script Roblox terbaik, fitur lengkap, dan layanan lisensi terpercaya di sini.">
 <style>
   :root{
     --bg:#0b0b12; --card:#14141f; --line:#26263a; --text:#ecebf5; --muted:#9a98b3;
@@ -19,12 +19,15 @@
   nav{position:sticky;top:0;z-index:10;background:rgba(11,11,18,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
   
-  /* Perbaikan Logo Navigasi */
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
   .brand img{width:36px;height:36px;object-fit:contain;display:block;border-radius:8px;background:#000;padding:2px;border:1px solid var(--line)}
   .brand b span{color:var(--accent)}
 
-  /* Perbaikan Logo Hero */
+  .nav-right{display:flex;align-items:center;gap:10px}
+
+  .login-btn{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font-weight:600;font-size:14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
+  .login-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+
   .hero-logo{width:140px;height:140px;object-fit:contain;display:block;margin:0 auto 16px;border-radius:20px;background:#000;padding:8px;border:1px solid var(--line);filter:drop-shadow(0 0 22px rgba(225,29,72,.35))}
 
   .menu-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
@@ -43,7 +46,7 @@
   .badge{display:inline-block;font-size:12px;padding:4px 12px;border:1px solid var(--line);border-radius:99px;color:var(--muted);margin-bottom:18px}
   h1{font-size:clamp(32px,7vw,54px);line-height:1.1;margin-bottom:14px}
   h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{color:var(--muted);max-width:520px;margin:0 auto 26px}
+  .hero p{color:var(--muted);max-width:580px;margin:0 auto 26px}
   .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   .btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--card);cursor:pointer;color:var(--text);transition:.15s}
   .btn:hover{transform:translateY(-2px);border-color:var(--accent)}
@@ -76,33 +79,20 @@
   .tag{display:inline-block;font-size:12px;background:rgba(34,197,94,.15);color:var(--ok);border:1px solid rgba(34,197,94,.4);padding:2px 10px;border-radius:99px;margin-bottom:10px}
   .game p{color:var(--muted);font-size:14px;margin-bottom:14px}
 
-  /* Fitur (scroll) */
+  /* Game Wrap */
   .game-wrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
   .game{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center}
-  .features{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
-  .features h4{font-size:15px;margin-bottom:10px}
-  .feat-list{max-height:360px;overflow-y:auto;border:1px solid var(--line);border-radius:12px;background:#0d0d16;scrollbar-width:thin;scrollbar-color:var(--accent) transparent;overscroll-behavior:contain}
-  .feat-list::-webkit-scrollbar{width:8px}
-  .feat-list::-webkit-scrollbar-thumb{background:var(--accent);border-radius:8px}
-  .fgroup h5{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text);background:#17172a;border-bottom:1px solid var(--line);border-top:1px solid var(--line)}
-  .fgroup:first-child h5{border-top:0}
-  .fgroup h5 em{font-style:normal;font-size:11px;letter-spacing:0;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:0 8px;border-radius:99px}
-  .fgroup ul{list-style:none;padding:4px 6px 8px}
-  .fgroup li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 8px;font-size:14px;border-radius:8px}
-  .fgroup li:hover{background:rgba(255,255,255,.03)}
-  .fgroup li .fn::before{content:"✓";color:var(--ok);font-weight:700;margin-right:9px}
-  .subs{display:flex;flex-wrap:wrap;gap:5px;margin-left:24px;width:100%}
-  .subs i{font-style:normal;font-size:12px;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:1px 9px;border-radius:99px}
 
   /* Beli */
   .buy{display:flex;flex-direction:column;gap:8px}
   .buy .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;font-size:14px;font-weight:700;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
   .buy .bi{width:18px;height:18px;fill:currentColor;flex-shrink:0}
   .btn.wa{background:#25D366;border:0;color:#fff}
-  .btn.wa:hover,.btn.dc:hover{filter:brightness(1.1)}
+  .btn.wa:hover,.btn.dc:hover,.btn.pay:hover{filter:brightness(1.1)}
   .btn.dc{background:#5865F2;border:0;color:#fff}
+  .btn.pay{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#fff}
 
-  /* Sosial (ikon saja, berjejer ke samping) */
+  /* Sosial */
   .socials{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:nowrap}
   .soc{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;transition:.15s;box-shadow:0 6px 18px rgba(0,0,0,.35)}
   .soc:hover{transform:translateY(-4px) scale(1.05)}
@@ -111,9 +101,28 @@
   .soc.tiktok{background:#000;border:1px solid #2a2a2a}
   .soc.whatsapp{background:#25D366}
 
+  /* Modal Login */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;visibility:hidden;transition:.2s}
+  .modal-overlay.active{opacity:1;visibility:visible}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;width:100%;max-width:380px;padding:24px;box-shadow:0 20px 40px rgba(0,0,0,.6);transform:translateY(10px);transition:.2s}
+  .modal-overlay.active .modal{transform:translateY(0)}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .modal-header h3{font-size:20px}
+  .close-modal{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer}
+  .close-modal:hover{color:var(--text)}
+  .login-options{display:flex;flex-direction:column;gap:12px}
+  .login-option-btn{display:flex;align-items:center;gap:12px;width:100%;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-weight:600;font-size:15px;cursor:pointer;transition:.15s;text-align:left}
+  .login-option-btn:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .login-option-btn svg{width:20px;height:20px;flex-shrink:0}
+  .login-option-btn.google{background:#fff;color:#000;border-color:#fff}
+  .login-option-btn.google:hover{background:#f1f1f1}
+  .login-option-btn.discord{background:#5865F2;border-color:#5865F2;color:#fff}
+  .login-option-btn.roblox{background:#23272a;border-color:#2c2f33;color:#fff}
+
   footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--muted);font-size:13px}
   .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ok);color:#04130a;padding:10px 18px;border-radius:10px;font-weight:600;transition:.25s;z-index:20}
   .toast.show{transform:translateX(-50%) translateY(0)}
+
   @media(max-width:640px){
     .soc{width:56px;height:56px}.socials{gap:14px}
     .game{grid-template-columns:1fr}
@@ -122,36 +131,63 @@
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ic-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol><symbol id="ic-dc" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
+  <symbol id="ic-dc" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol>
+  <symbol id="ic-card" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM1 10h22M7 15h2"/></symbol>
+  <symbol id="ic-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.2v3.15C3.18 21.34 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.2C.43 8.15 0 9.99 0 12s.43 3.85 1.2 5.4l4.07-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.18 2.66 1.2 6.6l4.07 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></symbol>
+  <symbol id="ic-roblox" viewBox="0 0 24 24"><path fill="currentColor" d="M18.926 3.074L3.074 18.926 5.074 20.926 20.926 5.074zM4.5 4.5h15v15h-15z"/></symbol>
+</svg>
 
 <nav>
   <div class="wrap">
     <a href="#" class="brand"><img src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" alt="Hyunjin Hub logo"><b>HYUNJIN<span>HUB</span></b></a>
-    <div class="menu-wrap">
-      <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menu">
-        <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-      <div class="menu" id="menu">
-        <a href="#script"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg> Script</a>
-        <a href="#game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10v5M4.5 12.5h5M16 11h.01M18.5 14h.01"/></svg> Game</a>
-        <a href="#harga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg> Harga</a>
-        <a href="#kontak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18 14.3c2.2.6 3.5 2.5 3.5 5.7"/></svg> Sosial</a>
+    <div class="nav-right">
+      <button class="login-btn" id="openLoginModal">Login</button>
+      <div class="menu-wrap">
+        <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+          <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <div class="menu" id="menu">
+          <a href="#script"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg> Script</a>
+          <a href="#game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10v5M4.5 12.5h5M16 11h.01M18.5 14h.01"/></svg> Game</a>
+          <a href="#harga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg> Harga</a>
+          <a href="#kontak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18 14.3c2.2.6 3.5 2.5 3.5 5.7"/></svg> Sosial</a>
+          <a href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg> Payment</a>
+        </div>
       </div>
     </div>
   </div>
 </nav>
 
+<!-- Modal Login -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Masuk ke Hyunjin Hub</h3>
+      <button class="close-modal" id="closeLoginModal">&times;</button>
+    </div>
+    <div class="login-options">
+      <button class="login-option-btn google" onclick="handleLogin('Google')">
+        <svg><use href="#ic-google"/></svg> Masuk dengan Google
+      </button>
+      <button class="login-option-btn roblox" onclick="handleLogin('Roblox')">
+        <svg><use href="#ic-roblox"/></svg> Masuk dengan Roblox
+      </button>
+      <button class="login-option-btn discord" onclick="handleLogin('Discord')">
+        <svg><use href="#ic-dc"/></svg> Masuk dengan Discord
+      </button>
+    </div>
+  </div>
+</div>
+
 <header class="hero">
   <div class="wrap">
     <img class="hero-logo" src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" alt="Hyunjin Hub">
-    <span class="badge">Roblox Script</span>
+    <span class="badge">Roblox Script Hub</span>
     <h1>Hyunjin <em>Hub</em></h1>
-    <p>Script untuk Roblox. Ambil key, salin script, lalu jalankan di executor kamu.</p>
-    <div class="btns">
-      <a class="btn primary" href="#script">Ambil Script</a>
-      <a class="btn" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener">Join Discord</a>
-    </div>
+    <p>Halo, Robloxers! Temukan script berkualitas tinggi, fitur premium terlengkap, dan pengalaman bermain game yang lebih seru bersama kami.</p>
   </div>
 </header>
 
@@ -179,111 +215,19 @@
 <section id="game">
   <div class="wrap">
     <h2>Game Support</h2>
-    <p class="sub">Game yang didukung oleh Hyunjin Hub.</p>
+    <p class="sub">Game utama yang didukung penuh oleh Hyunjin Hub.</p>
     <div class="game-wrap">
       <div class="game">
         <div class="game-img">
           <div class="ph">Violence<br>District</div>
-          <!-- Taruh gambar sendiri bernama game.jpg di folder yang sama untuk dipakai lebih dulu -->
           <img id="gameImg" src="game.jpg" alt="Violence District" onerror="loadRobloxIcon(this)">
         </div>
         <div>
           <span class="tag">● Supported</span>
           <h3>Violence District</h3>
-          <p>Script Hyunjin Hub berjalan di game Violence District di Roblox.</p>
+          <p>Nikmati berbagai fitur unggulan untuk mendominasi permainan di Violence District.</p>
           <a class="btn primary" href="https://www.roblox.com/games/93978595733734" target="_blank" rel="noopener">Buka Game</a>
         </div>
-      </div>
-
-      <div class="features">
-        <h4>Fitur</h4>
-        <!-- Edit fitur: tiap kategori = satu <div class="fgroup">. Tambah/hapus baris <li> sesuka hati. -->
-        <div class="feat-list" tabindex="0" aria-label="Daftar fitur">
-  <div class="fgroup"><h5>ESP / Visual <em>20</em></h5><ul>
-    <li><span class="fn">Player Highlight ESP</span><span class="subs"><i>Survivor</i><i>Killer</i><i>Spectator</i><i>Survivor Items</i><i>Nametags</i><i>Distance ESP</i></span></li>
-    <li><span class="fn">World Highlight ESP</span><span class="subs"><i>Generators (dengan progress)</i><i>Hooks</i><i>Gates</i><i>Pallets</i><i>Windows</i><i>SCP / Zombie</i></span></li>
-    <li><span class="fn">Window ESP (terpisah)</span></li>
-    <li><span class="fn">Crosshair (Dot / Plus / X / Box)</span></li>
-    <li><span class="fn">Fullbright</span></li>
-    <li><span class="fn">No Fog</span></li>
-    <li><span class="fn">Weather Themes (Christmas, Heavy Rain, Autumn, Cherry Blossom, Sunset, Blood Moon, Toxic Wasteland, Vaporwave, Midnight, dll)</span></li>
-    <li><span class="fn">Radar (ukuran, range, transparency, circle mode + filter Killer/Survivor/Generator/Pallet/Hook/Gate/Window/Zombie)</span></li>
-    <li><span class="fn">Spectator Counter</span></li>
-    <li><span class="fn">Killer Display (KystKiller)</span></li>
-    <li><span class="fn">Killer Perks Display</span></li>
-    <li><span class="fn">Predict Map</span></li>
-    <li><span class="fn">Hide Survivor Icon</span></li>
-    <li><span class="fn">Show Ping &amp; FPS</span></li>
-    <li><span class="fn">Show Hook Counter</span></li>
-    <li><span class="fn">First Person Camera (Survivor)</span></li>
-    <li><span class="fn">Camera FOV</span></li>
-    <li><span class="fn">Third Person (Killer)</span></li>
-    <li><span class="fn">Shift Lock</span></li>
-    <li><span class="fn">Infinity Zoom</span></li>
-  </ul></div>
-  <div class="fgroup"><h5>Movement <em>11</em></h5><ul>
-    <li><span class="fn">Speed Hack</span></li>
-    <li><span class="fn">Jump Hack</span></li>
-    <li><span class="fn">Infinite Jump</span></li>
-    <li><span class="fn">Noclip</span></li>
-    <li><span class="fn">Moonwalk (dengan zigzag &amp; boost)</span></li>
-    <li><span class="fn">Target Lock / Aim Lock</span></li>
-    <li><span class="fn">Invisible Not Visual</span></li>
-    <li><span class="fn">Anti AFK</span></li>
-    <li><span class="fn">Bypass Gate</span></li>
-    <li><span class="fn">Anti Fall Damage</span></li>
-    <li><span class="fn">Fling (Nearest / All)</span></li>
-  </ul></div>
-  <div class="fgroup"><h5>Survivor <em>17</em></h5><ul>
-    <li><span class="fn">Auto Skillcheck</span></li>
-    <li><span class="fn">Hide Skillcheck UI</span></li>
-    <li><span class="fn">Auto Leave Generator</span></li>
-    <li><span class="fn">Auto Attack</span></li>
-    <li><span class="fn">Hitbox Expand</span></li>
-    <li><span class="fn">Twist of Fate Silent Aim (+ laser, wallcheck, dll)</span></li>
-    <li><span class="fn">Flashlight Silent Aim (+ laser)</span></li>
-    <li><span class="fn">Flee Killer</span></li>
-    <li><span class="fn">Swift Vault / Auto Vault</span></li>
-    <li><span class="fn">Auto Pallet (Pallet Reflex)</span></li>
-    <li><span class="fn">Auto Parry (+ show range circle)</span></li>
-    <li><span class="fn">Fake Parry</span></li>
-    <li><span class="fn">Fake Generator</span></li>
-    <li><span class="fn">Anti Knock</span></li>
-    <li><span class="fn">Auto Dodge Spear</span></li>
-    <li><span class="fn">Survivor Killer Warning</span></li>
-    <li><span class="fn">Beat Survivor (auto exit / finish)</span></li>
-  </ul></div>
-  <div class="fgroup"><h5>Killer <em>15</em></h5><ul>
-    <li><span class="fn">Destroy Pallets</span></li>
-    <li><span class="fn">No Pallet Stun / Remove Palletwrong</span></li>
-    <li><span class="fn">Auto Hook</span></li>
-    <li><span class="fn">Auto Kick / Break Generator</span></li>
-    <li><span class="fn">Block All Vaults</span></li>
-    <li><span class="fn">Block / Auto Drop Pallets</span></li>
-    <li><span class="fn">Bypass Cooldown (Abyssal Burst, Hidden Leap, Veil, Lake Mist, Pursuit, dll)</span></li>
-    <li><span class="fn">Anti Blind (Flashlight)</span></li>
-    <li><span class="fn">No Slowdown</span></li>
-    <li><span class="fn">Custom Masked</span></li>
-    <li><span class="fn">Fake Attack (Counter Parry)</span></li>
-    <li><span class="fn">Infinite Skills / Frenzy</span></li>
-    <li><span class="fn">Spear Aimbot (manual target cycle)</span></li>
-    <li><span class="fn">Silent Aim Flask</span></li>
-    <li><span class="fn">Beat Killer (auto chase &amp; attack)</span></li>
-  </ul></div>
-  <div class="fgroup"><h5>Aimbot <em>3</em></h5><ul>
-    <li><span class="fn">Aimbot (Survivor → Killer) + FOV circle, visibility check, prediction, smoothness</span></li>
-    <li><span class="fn">Spear Aimbot (Killer)</span></li>
-    <li><span class="fn">Silent Aim (ToF &amp; Flashlight)</span></li>
-  </ul></div>
-  <div class="fgroup"><h5>Teleport / Utility <em>6</em></h5><ul>
-    <li><span class="fn">Teleport to Player</span></li>
-    <li><span class="fn">Teleport to Generator</span></li>
-    <li><span class="fn">Teleport to Gate</span></li>
-    <li><span class="fn">Teleport to Hook</span></li>
-    <li><span class="fn">Config Save / Load / Delete</span></li>
-    <li><span class="fn">ALT Cursor Unlock (PC)</span></li>
-  </ul></div>
-</div>
       </div>
     </div>
   </div>
@@ -298,25 +242,41 @@
         <h3>Harian</h3>
         <div class="price">Rp 10.000 <small>/ 1 hari</small></div>
         <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li></ul>
-        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Harian" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+        <div class="buy">
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Harian" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
+          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+        </div>
       </div>
       <div class="plan hot">
         <h3>Mingguan</h3>
         <div class="price">Rp 30.000 <small>/ 7 hari</small></div>
         <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li><li>Support prioritas</li></ul>
-        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Mingguan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+        <div class="buy">
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Mingguan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
+          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+        </div>
       </div>
       <div class="plan">
         <h3>Bulanan</h3>
         <div class="price">Rp 100.000 <small>/ 30 hari</small></div>
         <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li><li>Support prioritas</li></ul>
-        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Bulanan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+        <div class="buy">
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Bulanan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
+          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+        </div>
       </div>
       <div class="plan">
         <h3>Permanen</h3>
         <div class="price">Rp 500.000 <small>/ selamanya</small></div>
         <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update seumur hidup</li><li>Support prioritas</li></ul>
-        <div class="buy"><a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Permanen" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a><a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a></div>
+        <div class="buy">
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Permanen" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
+          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+        </div>
       </div>
     </div>
   </div>
@@ -351,8 +311,6 @@
 <div class="toast" id="toast">Script disalin!</div>
 
 <script>
-
-  // Menu navigasi
   var mBtn=document.getElementById('menuBtn'), menu=document.getElementById('menu');
   function setMenu(o){menu.classList.toggle('open',o);mBtn.setAttribute('aria-expanded',o);}
   mBtn.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'));});
@@ -360,9 +318,33 @@
   document.addEventListener('click',function(e){if(!menu.contains(e.target))setMenu(false);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 
+  // Modal Login Control
+  var loginModal = document.getElementById('loginModal');
+  var openLoginBtn = document.getElementById('openLoginModal');
+  var closeLoginBtn = document.getElementById('closeLoginModal');
+
+  openLoginBtn.addEventListener('click', function() {
+    loginModal.classList.add('active');
+  });
+
+  closeLoginBtn.addEventListener('click', function() {
+    loginModal.classList.remove('active');
+  });
+
+  loginModal.addEventListener('click', function(e) {
+    if (e.target === loginModal) {
+      loginModal.classList.remove('active');
+    }
+  });
+
+  // Simulasi Fungsi Login (Sambungkan ke OAuth Backend masing-masing jika sudah ada)
+  function handleLogin(provider) {
+    alert("Menghubungkan ke otentikasi " + provider + "... (Silakan sambungkan dengan backend OAuth Anda)");
+    loginModal.classList.remove('active');
+  }
+
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  // Salin script
   var toast = document.getElementById('toast');
   document.getElementById('copyBtn').addEventListener('click', function () {
     var text = document.getElementById('scriptBox').textContent.trim();
@@ -379,7 +361,6 @@
     }
   });
 
-  // Gambar game: pakai game.jpg kalau ada, kalau tidak ambil ikon game dari Roblox
   function loadRobloxIcon(img) {
     img.onerror = null;
     var url = 'https://thumbnails.roproxy.com/v1/places/gameicons?placeIds=93978595733734&returnPolicy=PlaceHolder&size=512x512&format=Png&isCircular=false';
