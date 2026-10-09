@@ -6,6 +6,16 @@
 <title>Hyunjin Hub</title>
 <link rel="icon" type="image/png" href="logo.png">
 <meta name="description" content="Selamat datang di Hyunjin Hub! Temukan script Roblox terbaik, fitur lengkap, dan layanan lisensi terpercaya di sini.">
+
+<!-- Clerk SDK -->
+<script
+  async
+  crossorigin="anonymous"
+  data-clerk-publishable-key="pk_test_cHJvdmVuLXNoaW5lci01NzYwLmNsZXJrLmFjY291bnRzLmRldiQ"
+  src="https://proven-shiner-5760.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+  type="text/javascript"
+></script>
+
 <style>
   :root{
     --bg:#0b0b12; --card:#14141f; --line:#26263a; --text:#ecebf5; --muted:#9a98b3;
@@ -169,13 +179,13 @@
       <button class="close-modal" id="closeLoginModal">&times;</button>
     </div>
     <div class="login-options">
-      <button class="login-option-btn google" onclick="handleLogin('Google')">
+      <button class="login-option-btn google" onclick="handleLogin('google')">
         <svg><use href="#ic-google"/></svg> Masuk dengan Google
       </button>
-      <button class="login-option-btn roblox" onclick="handleLogin('Roblox')">
+      <button class="login-option-btn roblox" onclick="handleLogin('roblox')">
         <svg><use href="#ic-roblox"/></svg> Masuk dengan Roblox
       </button>
-      <button class="login-option-btn discord" onclick="handleLogin('Discord')">
+      <button class="login-option-btn discord" onclick="handleLogin('discord')">
         <svg><use href="#ic-dc"/></svg> Masuk dengan Discord
       </button>
     </div>
@@ -311,6 +321,12 @@
 <div class="toast" id="toast">Script disalin!</div>
 
 <script>
+  window.addEventListener('load', async function () {
+    if (window.Clerk) {
+      await window.Clerk.load();
+    }
+  });
+
   var mBtn=document.getElementById('menuBtn'), menu=document.getElementById('menu');
   function setMenu(o){menu.classList.toggle('open',o);mBtn.setAttribute('aria-expanded',o);}
   mBtn.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'));});
@@ -337,9 +353,25 @@
     }
   });
 
-  // Simulasi Fungsi Login (Sambungkan ke OAuth Backend masing-masing jika sudah ada)
-  function handleLogin(provider) {
-    alert("Menghubungkan ke otentikasi " + provider + "... (Silakan sambungkan dengan backend OAuth Anda)");
+  // Integrasi Fungsi Login Clerk
+  async function handleLogin(provider) {
+    if (!window.Clerk) {
+      alert("Clerk belum dimuat sepenuhnya.");
+      return;
+    }
+    
+    try {
+      let strategy = "oauth_google";
+      if (provider === 'discord') strategy = "oauth_discord";
+      if (provider === 'roblox') strategy = "oauth_roblox"; // Pastikan provider Roblox sudah aktif di dashboard Clerk jika digunakan
+
+      await window.Clerk.openSignIn({
+        strategy: strategy
+      });
+    } catch (err) {
+      console.error(err);
+      window.Clerk.openSignIn();
+    }
     loginModal.classList.remove('active');
   }
 
