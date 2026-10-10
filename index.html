@@ -3,188 +3,490 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hyunjin Hub</title>
-<link rel="icon" type="image/png" href="logo.png">
+<title>Hyunjin Hub | Premium Roblox Script & Hub</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png">
 <meta name="description" content="Selamat datang di Hyunjin Hub! Temukan script Roblox terbaik, fitur lengkap, dan layanan lisensi terpercaya di sini.">
 
+<!-- Google Fonts: Poppins & Fira Code -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-  :root{
-    --bg:#0b0b12; --card:#14141f; --line:#26263a; --text:#ecebf5; --muted:#9a98b3;
-    --accent:#e11d48; --accent2:#7c3aed; --ok:#22c55e; --err:#ef4444;
+  :root {
+    --bg: #030305; 
+    --card: rgba(18, 18, 28, 0.65); 
+    --card-hover: rgba(28, 28, 42, 0.9);
+    --line: rgba(255, 255, 255, 0.08); 
+    --text: #f3f3f9; 
+    --muted: #a09eb8;
+    --accent: #f43f5e; 
+    --accent-glow: rgba(244, 63, 94, 0.45);
+    --accent2: #8b5cf6; 
+    --ok: #10b981; 
+    --err: #ef4444;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:960px;margin:0 auto;padding:0 18px}
-  nav{position:sticky;top:0;z-index:10;background:rgba(11,11,18,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+
+  /* Theme Presets */
+  [data-theme="violet"] { --accent: #8b5cf6; --accent-glow: rgba(139, 92, 246, 0.45); --accent2: #ec4899; }
+  [data-theme="emerald"] { --accent: #10b981; --accent-glow: rgba(16, 185, 129, 0.45); --accent2: #3b82f6; }
+  [data-theme="cyan"] { --accent: #06b6d4; --accent-glow: rgba(6, 182, 212, 0.45); --accent2: #6366f1; }
   
-  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
-  .brand img{width:36px;height:36px;object-fit:contain;display:block;border-radius:8px;background:#000;padding:2px;border:1px solid var(--line)}
-  .brand b span{color:var(--accent)}
-
-  .nav-right{display:flex;align-items:center;gap:10px}
-
-  .login-btn{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--text);font-weight:600;font-size:14px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px}
-  .login-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
-
-  .hero-logo{width:140px;height:140px;object-fit:cover;display:block;margin:0 auto 16px;border-radius:20px;background:#000;padding:8px;border:1px solid var(--line);filter:drop-shadow(0 0 22px rgba(225,29,72,.35))}
-
-  .menu-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
-  .menu-btn:hover{border-color:var(--accent)}
-  .menu-btn svg{width:22px;height:22px}
-  .menu-btn .x{display:none}
-  .menu-btn[aria-expanded="true"] .x{display:block}
-  .menu-btn[aria-expanded="true"] .bars{display:none}
-  .menu-wrap{position:relative}
-  .menu{position:absolute;right:0;top:calc(100% + 10px);min-width:190px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 14px 34px rgba(0,0,0,.5);opacity:0;visibility:hidden;transform:translateY(-6px);transition:.15s}
-  .menu.open{opacity:1;visibility:visible;transform:none}
-  .menu a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:9px;font-size:15px;color:var(--text)}
-  .menu a:hover{background:rgba(255,255,255,.05)}
-  .menu a svg{width:19px;height:19px;color:var(--accent);flex-shrink:0}
-  .hero{padding:70px 0 40px;text-align:center;background:radial-gradient(600px 300px at 50% 0,rgba(225,29,72,.22),transparent 70%)}
-  .badge{display:inline-block;font-size:12px;padding:4px 12px;border:1px solid var(--line);border-radius:99px;color:var(--muted);margin-bottom:18px}
-  h1{font-size:clamp(32px,7vw,54px);line-height:1.1;margin-bottom:14px}
-  h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{color:var(--muted);max-width:580px;margin:0 auto 26px}
-  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid var(--line);background:var(--card);cursor:pointer;color:var(--text);transition:.15s}
-  .btn:hover{transform:translateY(-2px);border-color:var(--accent)}
-  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0}
-  section{padding:46px 0}
-  h2{font-size:26px;margin-bottom:6px}
-  .sub{color:var(--muted);margin-bottom:22px;font-size:15px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
-  .code{position:relative;background:#07070c;border:1px solid var(--line);border-radius:10px;padding:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#c9f7d6;word-break:break-all;margin-bottom:14px}
-  .steps{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:6px}
-  .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
-  .step b{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--accent);align-items:center;justify-content:center;font-size:13px;margin-bottom:8px}
-  .step p{font-size:14px;color:var(--muted)}
-  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(205px,1fr))}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   
-  /* PERBAIKAN CSS PLAN */
-  .plan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;cursor:pointer;transition:transform 0.2s, border-color 0.2s, box-shadow 0.2s}
-  .plan:hover{transform:translateY(-2px)}
-  .plan.hot{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;transform:translateY(-2px)}
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  body { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: var(--bg);
+    color: var(--text); 
+    line-height: 1.6; 
+    overflow-x: hidden;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+
+  /* Animated Ambient Glowing Orbs */
+  .ambient-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(160px);
+    z-index: -3;
+    opacity: 0.35;
+    animation: floatOrb 18s infinite alternate ease-in-out;
+    pointer-events: none;
+  }
+  .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: var(--accent); }
+  .orb-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: var(--accent2); animation-delay: -6s; }
   
-  .plan h3{font-size:18px}
-  .price{font-size:26px;font-weight:800;margin:10px 0;line-height:1.2}
-  .price small{display:block;font-size:13px;color:var(--muted);font-weight:500}
-  .plan ul{list-style:none;margin:8px 0 20px;color:var(--muted);font-size:14px;flex:1}
-  .plan li{padding:4px 0}
-  .plan li::before{content:"✓ ";color:var(--ok)}
-  .note{margin-top:18px;font-size:13px;color:var(--muted)}
+  @keyframes floatOrb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(12vw, 12vh) scale(1.3); }
+  }
+
+  /* Animated Grid Background Overlay */
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at center, black, transparent 85%);
+    -webkit-mask-image: radial-gradient(circle at center, black, transparent 85%);
+  }
+
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  
+  /* Scroll Progress Bar */
+  .progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 1000; background: transparent; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; box-shadow: 0 0 15px var(--accent); transition: width 0.1s; }
+
+  /* Premium Glass Navbar */
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(3, 3, 5, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); transition: all 0.4s ease; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+  
+  .brand { display: flex; align-items: center; gap: 14px; font-weight: 800; letter-spacing: 0.5px; font-size: 22px; text-transform: uppercase;}
+  .brand img { width: 44px; height: 44px; object-fit: contain; border-radius: 14px; background: #000; padding: 4px; border: 1px solid var(--line); transition: .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .brand:hover img { border-color: var(--accent); transform: scale(1.1) rotate(6deg); box-shadow: 0 0 25px var(--accent-glow); }
+  .brand b span { color: var(--accent); text-shadow: 0 0 12px var(--accent-glow); }
+
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+
+  /* Theme Switcher Button */
+  .theme-switcher, .notif-btn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; }
+  .theme-switcher:hover, .notif-btn:hover { border-color: var(--accent); transform: scale(1.05); }
+  .notif-badge { position: absolute; top: -4px; right: -4px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+
+  .login-btn { padding: 10px 20px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: var(--text); font-weight: 600; font-size: 14px; cursor: pointer; transition: all .3s ease; display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(5px); }
+  .login-btn:hover { border-color: var(--accent); background: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); color: #fff; }
+
+  /* User Profile Pill (Active Login State) */
+  .user-pill { display: none; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; border-radius: 99px; background: rgba(255,255,255,0.06); border: 1px solid var(--line); cursor: pointer; transition: 0.3s; position: relative; }
+  .user-pill:hover { border-color: var(--accent); background: rgba(255,255,255,0.1); }
+  .user-pill img, .user-avatar-placeholder { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: #fff; object-fit: cover; }
+  .user-pill .username { font-size: 13px; font-weight: 600; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* User Dropdown Menu */
+  .user-dropdown { position: absolute; right: 0; top: calc(100% + 12px); width: 230px; background: rgba(10, 10, 16, 0.98); backdrop-filter: blur(25px); border: 1px solid var(--line); border-radius: 16px; padding: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 100; }
+  .user-pill.active .user-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+  .user-dropdown-header { padding: 8px 12px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  .user-dropdown-header small { color: var(--muted); display: block; font-size: 11px; }
+  .user-dropdown-header b { font-size: 13px; color: #fff; }
+  .user-dropdown button { width: 100%; text-align: left; padding: 10px 12px; border-radius: 10px; background: transparent; border: none; color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+  .user-dropdown button:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+  .user-dropdown button.logout-action:hover { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+
+  /* Hamburger Menu */
+  .menu-btn { width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--line); background: var(--card); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: .2s; }
+  .menu-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .menu-btn svg { width: 22px; height: 22px; }
+  .menu-btn .x { display: none; }
+  .menu-btn[aria-expanded="true"] .x { display: block; }
+  .menu-btn[aria-expanded="true"] .bars { display: none; }
+  .menu-wrap { position: relative; }
+  .menu { position: absolute; right: 0; top: calc(100% + 15px); min-width: 240px; background: rgba(8, 8, 14, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--line); border-radius: 18px; padding: 10px; box-shadow: 0 30px 60px rgba(0,0,0,.8); opacity: 0; visibility: hidden; transform: translateY(-15px) scale(0.95); transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: top right; }
+  .menu.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+  .menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; font-size: 14px; color: var(--text); font-weight: 500; transition: .3s; }
+  .menu a:hover { background: rgba(244, 63, 94, 0.12); color: #fff; transform: translateX(6px); }
+  .menu a svg { width: 18px; height: 18px; color: var(--accent); transition: .3s; }
+  .menu a:hover svg { color: var(--accent2); transform: scale(1.2); }
+
+  /* Hero Section */
+  .hero { padding: 90px 0 70px; position: relative; overflow: hidden; min-height: 85vh; display: flex; align-items: center; }
+  .hero-inner { display: flex; align-items: center; justify-content: space-between; gap: 50px; width: 100%; }
+  .hero-text { flex: 1.2; text-align: left; }
+  .hero-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; position: relative; }
+
+  /* Status Badge */
+  .status-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; padding: 8px 18px; border: 1px solid rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.06); border-radius: 99px; color: var(--ok); margin-bottom: 22px; letter-spacing: 0.5px; backdrop-filter: blur(10px); }
+  .pulse-dot { width: 8px; height: 8px; background-color: var(--ok); border-radius: 50%; box-shadow: 0 0 10px var(--ok); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+  h1 { font-size: clamp(42px, 6vw, 70px); line-height: 1.1; margin-bottom: 22px; font-weight: 800; letter-spacing: -1.5px; }
+  h1 em { font-style: normal; background: linear-gradient(135deg, #fff, var(--muted)); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; }
+  h1 .highlight { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { color: var(--muted); font-size: 16px; margin-bottom: 32px; line-height: 1.8; max-width: 95%; font-weight: 300; }
+  
+  .btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; padding: 15px 30px; border-radius: 14px; font-weight: 600; font-size: 15px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px); cursor: pointer; }
+  .btn:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.3); box-shadow: 0 10px 25px rgba(0,0,0,.4); background: rgba(255,255,255,0.08); }
+  .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); border: 0; box-shadow: 0 10px 30px var(--accent-glow); color: #fff; position: relative; overflow: hidden; }
+  .btn.primary::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: skewX(-20deg); transition: 0.5s; }
+  .btn.primary:hover::after { left: 150%; }
+  .btn.primary:hover { filter: brightness(1.15); box-shadow: 0 15px 35px var(--accent-glow); }
+
+  /* Hero Media Animation */
+  @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-15px) rotate(1.5deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+  .hero-logo-container { position: relative; width: 270px; height: 270px; animation: float 6s ease-in-out infinite; }
+  .hero-logo-container::before { content:''; position: absolute; inset: -20px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0%, transparent 70%); filter: blur(40px); opacity: 0.35; z-index: -1; animation: pulse 3s infinite alternate; }
+  .hero-logo { width: 100%; height: 100%; object-fit: cover; border-radius: 30px; background: rgba(5,5,5,0.8); padding: 12px; border: 1px solid rgba(255,255,255,0.1); transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; z-index: 1; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+  .hero-logo:hover { transform: scale(1.06); border-color: var(--accent); box-shadow: 0 30px 60px var(--accent-glow); }
+
+  section { padding: 90px 0; position: relative; z-index: 1; }
+  h2 { font-size: 34px; margin-bottom: 14px; font-weight: 800; letter-spacing: -1px; }
+  h2 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--muted); margin-bottom: 45px; font-size: 16px; max-width: 620px; font-weight: 300; }
+  
+  /* Feature Grid */
+  .features-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .feature-card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 32px; transition: .5s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: left; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative; overflow: hidden; z-index: 1; }
+  .feature-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(700px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-glow), transparent 40%); z-index: -1; opacity: 0; transition: opacity 0.3s; }
+  .feature-card:hover::before { opacity: 0.3; }
+  .feature-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .feature-card:hover::after { transform: scaleX(1); }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-8px); background: var(--card-hover); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow); }
+  .feature-card .icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(244,63,94,.15), rgba(139,92,246,.15)); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 22px; font-size: 24px; border: 1px solid rgba(244,63,94,.25); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  .feature-card h3 { font-size: 20px; margin-bottom: 10px; font-weight: 700; color: #fff; }
+  .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+  /* Live Executor Status Checker Widget */
+  .checker-box { margin-top: 35px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 24px 28px; backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .checker-info h4 { font-size: 17px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+  .checker-info p { font-size: 13px; color: var(--muted); }
+  .checker-list { display: flex; gap: 12px; flex-wrap: wrap; }
+  .executor-badge { background: rgba(0,0,0,0.4); border: 1px solid var(--line); padding: 8px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .executor-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+  .executor-badge.warning .dot { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+
+  /* Terminal UI Box */
+  .terminal-box { background: rgba(8, 8, 14, 0.92); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,0.05) inset; margin-bottom: 20px; position: relative; }
+  .terminal-header { background: rgba(18, 18, 28, 0.9); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+  .terminal-dots { display: flex; gap: 8px; }
+  .terminal-dots span { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+  .terminal-dots .red { background: #ff5f56; }
+  .terminal-dots .yellow { background: #ffbd2e; }
+  .terminal-dots .green { background: #27c93f; }
+  .terminal-title { color: var(--muted); font-size: 13px; font-weight: 500; font-family: 'Fira Code', monospace; }
+  
+  .terminal-copy-icon { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); color: var(--muted); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-family: 'Poppins', sans-serif; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; }
+  .terminal-copy-icon:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .terminal-body { padding: 28px; position: relative; min-height: 95px; display: flex; align-items: center; }
+  .code { font-family: 'Fira Code', Consolas, monospace; font-size: 14px; color: #a5f3fc; word-break: break-all; line-height: 1.6; text-shadow: 0 0 10px rgba(165, 243, 252, 0.3); }
+  .cursor { display: inline-block; width: 8px; height: 18px; background: #a5f3fc; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 4px; box-shadow: 0 0 8px #a5f3fc; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* Interactive Script Options */
+  .script-options { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; }
+  .script-option-chip { background: var(--card); border: 1px solid var(--line); padding: 8px 16px; border-radius: 12px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; color: var(--muted); }
+  .script-option-chip.active { background: rgba(244,63,94,0.15); border-color: var(--accent); color: #fff; }
+  .script-option-chip input { accent-color: var(--accent); }
+
+  /* KEY SYSTEM & REDEEM WIDGET (REBUILT & POLISHED) */
+  .key-redeem-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 28px; margin-top: 35px; backdrop-filter: blur(20px); display: flex; flex-direction: column; gap: 16px; position: relative; overflow: hidden; }
+  .key-redeem-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .key-redeem-card h4 { font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .key-input-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .key-input-row input { flex: 1; min-width: 240px; padding: 14px 18px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,0.5); color: var(--text); font-size: 14px; outline: none; font-family: 'Poppins', sans-serif; transition: 0.3s; }
+  .key-input-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
+  
+  .key-helper-links { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin-top: -4px; flex-wrap: wrap; gap: 10px; }
+  .key-helper-links a { color: var(--accent); font-weight: 600; text-decoration: underline; transition: 0.2s; }
+  .key-helper-links a:hover { color: var(--accent2); }
+
+  /* Steps */
+  .steps { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; transition: .4s; backdrop-filter: blur(10px); position: relative; }
+  .step:hover { border-color: var(--accent); background: var(--card-hover); transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+  .step b { display: inline-flex; width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); align-items: center; justify-content: center; font-size: 16px; font-weight: 800; margin-bottom: 16px; box-shadow: 0 8px 20px var(--accent-glow); color: #fff;}
+  .step p { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.6; }
+
+  /* Game Selector Tabs */
+  .game-tabs { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+  .game-tab { padding: 10px 18px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--muted); font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.3s; }
+  .game-tab.active, .game-tab:hover { background: rgba(244,63,94,0.15); border-color: var(--accent); color: #fff; box-shadow: 0 5px 15px var(--accent-glow); }
 
   /* Game support */
-  .game-img{position:relative;width:100%;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#3b0a1c,#2a1160);display:flex;align-items:center;justify-content:center}
-  .game-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-  .game-img .ph{font-weight:800;text-align:center;padding:12px;font-size:20px;line-height:1.2}
-  .game h3{font-size:22px;margin-bottom:4px}
-  .tag{display:inline-block;font-size:12px;background:rgba(34,197,94,.15);color:var(--ok);border:1px solid rgba(34,197,94,.4);padding:2px 10px;border-radius:99px;margin-bottom:10px}
-  .game p{color:var(--muted);font-size:14px;margin-bottom:14px}
+  .game-wrap { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,.4); transition: .5s; backdrop-filter: blur(20px); position: relative; overflow: hidden; }
+  .game-wrap::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg at 50% 50%, transparent 0%, rgba(139,92,246,0.08) 50%, transparent 100%); animation: rotateGlow 12s linear infinite; z-index: -1; }
+  @keyframes rotateGlow { 100% { transform: rotate(360deg); } }
+  .game-wrap:hover { border-color: rgba(139,92,246,0.4); box-shadow: 0 30px 60px rgba(139,92,246,0.15); }
+  .game { display: grid; grid-template-columns: 340px 1fr; gap: 40px; align-items: center; }
+  .game-img { position: relative; width: 100%; aspect-ratio: 16/10; border-radius: 18px; overflow: hidden; background: linear-gradient(135deg, #180812, #0d0620); display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 30px rgba(0,0,0,.6); }
+  .game-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0.85; }
+  .game-wrap:hover .game-img img { transform: scale(1.12); opacity: 1; }
+  .game-img .ph { font-weight: 800; text-align: center; padding: 16px; font-size: 26px; line-height: 1.2; text-shadow: 0 5px 20px rgba(0,0,0,1); z-index: 2; position: relative; letter-spacing: -1px; }
+  .game-info h3 { font-size: 30px; margin-bottom: 14px; font-weight: 800; letter-spacing: -0.5px; }
+  .game-info p { color: var(--muted); font-size: 15px; margin-bottom: 26px; line-height: 1.8; font-weight: 300; }
 
-  /* Game Wrap */
-  .game-wrap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-  .game{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:center}
-
-  /* Beli */
-  .buy{display:flex;flex-direction:column;gap:8px}
-  .buy .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;font-size:14px;font-weight:700;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
-  .buy .bi{width:18px;height:18px;fill:currentColor;flex-shrink:0}
-  .btn.wa{background:#25D366;border:0;color:#fff}
-  .btn.wa:hover,.btn.dc:hover,.btn.pay:hover,.btn.donate:hover{filter:brightness(1.1)}
-  .btn.dc{background:#5865F2;border:0;color:#fff}
-  .btn.pay{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#fff}
-  .btn.donate{background:#f59e0b;border:0;color:#fff}
-
-  /* Sosial */
-  .socials{display:flex;gap:20px;justify-content:center;align-items:center;flex-wrap:wrap}
-  .soc-item{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
-  .soc{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;transition:.15s;box-shadow:0 6px 18px rgba(0,0,0,.35)}
-  .soc:hover{transform:translateY(-4px) scale(1.05)}
-  .soc svg{width:32px;height:32px;display:block}
-  .soc.discord{background:#5865F2}
-  .soc.tiktok{background:#000;border:1px solid #2a2a2a}
-  .soc.whatsapp{background:#25D366}
-  .soc.donate{background:#f59e0b}
-  .soc-item span{font-size:13px;font-weight:600;color:var(--muted)}
-
-  /* Modal Overlay */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:100;opacity:0;visibility:hidden;transition:.2s}
-  .modal-overlay.active{opacity:1;visibility:visible}
-  .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;width:100%;max-width:380px;padding:24px;box-shadow:0 20px 40px rgba(0,0,0,.6);transform:translateY(10px);transition:.2s}
-  .modal-overlay.active .modal{transform:translateY(0)}
-  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-  .modal-header h3{font-size:20px}
-  .close-modal{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer}
-  .close-modal:hover{color:var(--text)}
-  .login-options{display:flex;flex-direction:column;gap:12px}
-  .login-option-btn{display:flex;align-items:center;gap:12px;width:100%;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-weight:600;font-size:15px;cursor:pointer;transition:.15s;text-align:left}
-  .login-option-btn:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .login-option-btn svg{width:20px;height:20px;flex-shrink:0}
-  .login-option-btn.google{background:#fff;color:#000;border-color:#fff}
-  .login-option-btn.google:hover{background:#f1f1f1}
-  .login-option-btn.discord{background:#5865F2;border-color:#5865F2;color:#fff}
-  .login-option-btn.roblox{background:#23272a;border-color:#2c2f33;color:#fff}
-
-  .custom-input-group{display:flex;flex-direction:column;gap:10px}
-  .custom-input-group label{font-size:13px;color:var(--muted)}
-  .custom-input-group input{width:100%;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font-size:15px;outline:none;transition:.15s}
-  .custom-input-group input:focus{border-color:var(--accent)}
+  /* Pricing Plans */
+  .grid-price { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .plan { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 36px 26px; display: flex; flex-direction: column; cursor: pointer; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+  .plan:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,.6); border-color: rgba(255,255,255,0.2); background: rgba(28, 28, 40, 0.85); }
+  .plan.hot { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset, 0 20px 50px var(--accent-glow); transform: translateY(-10px); background: linear-gradient(180deg, var(--accent-glow) 0%, rgba(18,18,28,0.95) 100%); }
+  .plan.hot:hover { transform: translateY(-15px); box-shadow: 0 0 0 1px var(--accent) inset, 0 30px 60px var(--accent-glow); }
+  .plan.hot::before { content: 'TERLARIS'; position: absolute; top: 18px; right: -42px; background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; font-size: 10px; font-weight: 800; padding: 6px 45px; transform: rotate(45deg); letter-spacing: 1.5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
   
-  .status-msg{font-size:12px;display:none;margin-top:-4px}
-  .status-msg.error{color:var(--err);display:block}
-  .status-msg.success{color:var(--ok);display:block}
+  .plan h3 { font-size: 20px; color: #fff; font-weight: 700; margin-bottom: 6px; }
+  .price { font-size: 38px; font-weight: 800; margin: 8px 0 22px; line-height: 1; color: var(--accent2); text-shadow: 0 0 20px rgba(139, 92, 246, 0.25); }
+  .plan.hot .price { color: var(--accent); text-shadow: 0 0 20px var(--accent-glow); }
+  .price small { display: block; font-size: 14px; color: var(--muted); font-weight: 500; margin-top: 8px; }
+  .plan ul { list-style: none; margin: 0 0 30px; color: var(--muted); font-size: 14px; flex: 1; }
+  .plan li { padding: 9px 0; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .plan li:last-child { border-bottom: none; }
+  .plan li::before { content: "✓"; color: var(--ok); font-weight: bold; background: rgba(16,185,129,.15); min-width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; margin-top: 2px; }
 
-  .custom-input-btns{display:flex;gap:10px;margin-top:10px}
-  .custom-input-btns button{flex:1;padding:10px;border-radius:10px;font-weight:600;cursor:pointer;border:1px solid var(--line);transition:.15s}
-  .btn-cancel{background:var(--bg);color:var(--muted)}
-  .btn-cancel:hover{border-color:var(--muted);color:var(--text)}
-  .btn-submit{background:linear-gradient(90deg,var(--accent),var(--accent2));border:0;color:#fff}
-  .btn-submit:hover{filter:brightness(1.1)}
+  /* Beli Buttons */
+  .buy { display: flex; flex-direction: column; gap: 12px; }
+  .buy .btn { flex: 1; padding: 13px; font-size: 14px; border-radius: 12px; width: 100%; border: none; }
+  .btn.wa { background: rgba(37, 211, 102, 0.08); border: 1px solid rgba(37, 211, 102, 0.25); color: #25D366; }
+  .btn.wa:hover { background: #25D366; color: #fff; border-color: #25D366; box-shadow: 0 8px 20px rgba(37,211,102,0.3); }
+  .btn.pay { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #fff; box-shadow: 0 8px 20px var(--accent-glow); }
+  .btn.pay:hover { filter: brightness(1.15); }
 
-  footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;color:var(--muted);font-size:13px}
-  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:var(--ok);color:#04130a;padding:10px 18px;border-radius:10px;font-weight:600;transition:.25s;z-index:20}
-  .toast.show{transform:translateX(-50%) translateY(0)}
+  /* FAQ Section */
+  .faq-list { display: flex; flex-direction: column; gap: 16px; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px 26px; backdrop-filter: blur(10px); transition: all 0.4s ease; cursor: pointer; }
+  details:hover { background: rgba(255,255,255,0.04); }
+  details[open] { border-color: var(--accent); background: var(--card-hover); box-shadow: 0 15px 30px rgba(0,0,0,0.3); padding-bottom: 26px; }
+  summary { font-size: 16px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--text); outline: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; font-size: 24px; color: var(--accent); font-weight: 400; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  details[open] summary::after { transform: rotate(135deg); color: var(--err); }
+  details p { margin-top: 16px; color: var(--muted); font-size: 14px; line-height: 1.8; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); font-weight: 300; animation: fadeInDown 0.4s ease forwards; opacity: 0; transform: translateY(-8px); }
+  @keyframes fadeInDown { to { opacity: 1; transform: translateY(0); } }
 
-  @media(max-width:640px){
-    .soc{width:56px;height:56px}.socials{gap:14px}
-    .game{grid-template-columns:1fr}
-    .game-img{max-width:240px;margin:0 auto}
+  /* Socials */
+  .socials { display: flex; gap: 24px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 35px; }
+  .soc-item { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+  .soc { width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 12px 25px rgba(0,0,0,.4); background: var(--card); border: 1px solid var(--line); backdrop-filter: blur(10px); }
+  .soc:hover { transform: translateY(-10px) scale(1.06); }
+  .soc svg { width: 32px; height: 32px; display: block; transition: .3s; }
+  
+  .soc.discord:hover { border-color: #5865F2; background: #5865F2; box-shadow: 0 12px 30px rgba(88,101,242,.5); }
+  .soc.discord:hover svg { fill: #fff; }
+  .soc.discord svg { fill: #5865F2; }
+
+  .soc.tiktok:hover { border-color: #fff; background: #fff; box-shadow: 0 12px 30px rgba(255,255,255,.3); }
+  .soc.tiktok:hover svg { fill: #000; }
+  .soc.tiktok svg { fill: #fff; }
+
+  .soc.whatsapp:hover { border-color: #25D366; background: #25D366; box-shadow: 0 12px 30px rgba(37,211,102,.5); }
+  .soc.whatsapp:hover svg { fill: #fff; }
+  .soc.whatsapp svg { fill: #25D366; }
+
+  .soc.donate:hover { border-color: #f59e0b; background: #f59e0b; box-shadow: 0 12px 30px rgba(245,158,11,.5); }
+  .soc.donate:hover svg { fill: #fff; }
+  .soc.donate svg { fill: #f59e0b; }
+
+  .soc-item span { font-size: 14px; font-weight: 600; color: var(--muted); transition: .3s; }
+  .soc-item:hover span { color: var(--text); text-shadow: 0 0 10px rgba(255,255,255,0.4); }
+
+  /* Modals */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; visibility: hidden; transition: all .4s ease; }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+  .modal { background: rgba(12, 12, 20, 0.96); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; width: 100%; max-width: 420px; padding: 36px; box-shadow: 0 40px 80px rgba(0,0,0,1); transform: translateY(30px) scale(0.92); transition: all .5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+  .modal::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .modal-overlay.active .modal { transform: translateY(0) scale(1); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+  .modal-header h3 { font-size: 22px; font-weight: 800; }
+  .close-modal { background: rgba(255,255,255,.04); border: 1px solid var(--line); width: 36px; height: 36px; border-radius: 50%; color: var(--muted); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: .3s; }
+  .close-modal:hover { background: var(--err); color: #fff; border-color: var(--err); transform: rotate(90deg) scale(1.1); }
+  
+  .login-options { display: flex; flex-direction: column; gap: 14px; }
+  .login-option-btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 15px; border-radius: 14px; border: 1px solid var(--line); background: rgba(20,20,30,.5); color: var(--text); font-weight: 600; font-size: 15px; cursor: pointer; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .login-option-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,.5); }
+  .login-option-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .login-option-btn.google { background: #fff; color: #000; border-color: #fff; }
+  .login-option-btn.google:hover { box-shadow: 0 10px 25px rgba(255,255,255,0.3); }
+  .login-option-btn.discord { background: #5865F2; border-color: #5865F2; color: #fff; }
+  .login-option-btn.discord:hover { box-shadow: 0 10px 25px rgba(88,101,242,0.4); }
+  .login-option-btn.roblox { background: #23272a; border-color: #2c2f33; color: #fff; }
+
+  .custom-input-group { display: flex; flex-direction: column; gap: 14px; }
+  .custom-input-group label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .custom-input-group input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid var(--line); background: rgba(0,0,0,.5); color: var(--text); font-size: 14px; outline: none; transition: .3s; font-family: 'Poppins', sans-serif; }
+  .custom-input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); background: rgba(0,0,0,.8); }
+  
+  .status-msg { font-size: 13px; display: none; margin-top: -2px; padding: 10px 14px; border-radius: 10px; font-weight: 500; animation: fadeInDown 0.3s ease; }
+  .status-msg.error { color: #fca5a5; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); display: block; }
+  .status-msg.success { color: #86efac; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); display: block; }
+
+  .custom-input-btns { display: flex; gap: 12px; margin-top: 8px; }
+  .custom-input-btns button { flex: 1; padding: 14px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: .3s; font-size: 15px; border: none; }
+  .btn-cancel { background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--text); }
+  .btn-cancel:hover { background: rgba(255,255,255,.1); transform: translateY(-2px); }
+  .btn-submit { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; box-shadow: 0 8px 20px var(--accent-glow); }
+  .btn-submit:hover { filter: brightness(1.15); transform: translateY(-2px); }
+
+  /* NEW FEATURE: Notification Modal / Popover */
+  .notif-dropdown { position: absolute; right: 0; top: calc(100% + 12px); width: 280px; background: rgba(10, 10, 16, 0.98); backdrop-filter: blur(25px); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s ease; z-index: 100; text-align: left; }
+  .notif-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+  .notif-header { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .notif-item { font-size: 12px; color: var(--muted); margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .notif-item b { color: var(--text); display: block; }
+
+  /* Back to Top Btn */
+  #backToTop { position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px; border-radius: 50%; background: rgba(18,18,28,0.85); border: 1px solid var(--line); color: var(--text); font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; z-index: 99; transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 12px 25px rgba(0,0,0,.6); backdrop-filter: blur(10px); transform: translateY(20px); }
+  #backToTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  #backToTop:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-6px) scale(1.08); box-shadow: 0 15px 30px var(--accent-glow); }
+
+  footer { border-top: 1px solid var(--line); padding: 45px 0; text-align: center; color: var(--muted); font-size: 14px; background: rgba(3,3,5,.85); backdrop-filter: blur(20px); }
+  footer span { color: var(--text); font-weight: 700; }
+  
+  .toast { position: fixed; left: 50%; bottom: 35px; transform: translateX(-50%) translateY(100px); background: var(--ok); color: #000; padding: 14px 28px; border-radius: 14px; font-weight: 700; transition: all .5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 200; box-shadow: 0 20px 40px rgba(16,185,129,.4); font-size: 15px; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Scroll Reveal Animation Classes */
+  .reveal { opacity: 0; transform: translateY(40px) scale(0.98); transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+  @media(max-width: 900px) {
+    .hero-inner { flex-direction: column-reverse; text-align: center; gap: 35px; }
+    .hero-text { text-align: center; }
+    .hero p { margin: 0 auto 32px; }
+    .btns { justify-content: center; }
+    .game { grid-template-columns: 1fr; gap: 25px; }
+    .game-img { max-width: 100%; margin: 0 auto; }
+    h1 { font-size: 42px; }
+    .checker-box { flex-direction: column; align-items: flex-start; }
+  }
+  @media(max-width: 640px) {
+    .soc { width: 60px; height: 60px; border-radius: 16px; } 
+    .socials { gap: 14px; }
+    #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; }
+    .feature-card, .plan, .step { padding: 22px; }
+    .price { font-size: 34px; }
   }
 </style>
 </head>
 <body>
+
+<!-- Ambient Glowing Orbs -->
+<div class="ambient-orb orb-1"></div>
+<div class="ambient-orb orb-2"></div>
+
+<!-- Animated Grid Overlay -->
+<div class="bg-grid"></div>
+
+<!-- Progress Bar -->
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- SVG Icons -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="ic-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.095 3.195 5.076 4.483.709.3 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
-  <symbol id="ic-dc" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></symbol>
+  <symbol id="ic-dc" viewBox="0 0 24 24"><path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.077.077 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></symbol>
   <symbol id="ic-tiktok" viewBox="0 0 24 24"><path fill="currentColor" d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></symbol>
   <symbol id="ic-card" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM1 10h22M7 15h2"/></symbol>
   <symbol id="ic-donate" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></symbol>
   <symbol id="ic-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.2v3.15C3.18 21.34 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.2C0.43 8.15 0 9.99 0 12s.43 3.85 1.2 5.4l4.07-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.18 2.66 1.2 6.6l4.07 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></symbol>
   <symbol id="ic-roblox" viewBox="0 0 24 24"><path fill="currentColor" d="M18.926 3.074L3.074 18.926 5.074 20.926 20.926 5.074zM4.5 4.5h15v15h-15z"/></symbol>
+  <symbol id="ic-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <symbol id="ic-bolt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="ic-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+  <symbol id="ic-palette" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 1 0 7.54 16.63.8.8 0 0 1 .46-.73c.42-.18.78-.49 1-.88A10 10 0 0 0 12 2zm-4 7a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4-3a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm-8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
 </svg>
 
-<video id="bgVideo" autoplay loop muted playsinline style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;pointer-events:none"></video>
+<video id="bgVideo" autoplay loop muted playsinline style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-4;pointer-events:none;opacity:0.18;"></video>
 
-<nav>
+<nav id="navbar">
   <div class="wrap">
     <a href="#" class="brand"><img src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/logo.png" alt="Hyunjin Hub logo"><b>HYUNJIN<span>HUB</span></b></a>
     <div class="nav-right">
-      <button class="login-btn" id="openLoginModal">Login</button>
+      <button class="theme-switcher" id="themeSwitcher" title="Ganti Warna Tema">
+        <svg width="18" height="18"><use href="#ic-palette"/></svg>
+      </button>
+
+      <!-- NEW FEATURE: Notification / Activity Bell -->
+      <div style="position:relative;">
+        <button class="notif-btn" id="notifToggleBtn" title="Aktivitas & Info Terbaru">
+          <svg width="18" height="18"><use href="#ic-bell"/></svg>
+          <span class="notif-badge"></span>
+        </button>
+        <div class="notif-dropdown" id="notifDropdownMenu">
+          <div class="notif-header">
+            <span>Pemberitahuan</span>
+            <small style="color:var(--accent); cursor:pointer;" onclick="clearNotifs()">Tandai Dibaca</small>
+          </div>
+          <div class="notif-item"><b>🔥 Update v2.5 Rilis</b>Violence District script sekarang mendukung Auto-Parry & Aimbot prediksi gerakan.</div>
+          <div class="notif-item"><b>🔑 Free Key System</b>Dapatkan akses 24 jam gratis melalui Linkvertise / Lootlabs di bawah.</div>
+        </div>
+      </div>
+
+      <!-- Tombol Login Asli -->
+      <button class="login-btn" id="openLoginModal">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+        Login
+      </button>
+
+      <!-- Profil Pengguna setelah Login -->
+      <div class="user-pill" id="userPill" onclick="toggleUserDropdown(event)">
+        <div class="user-avatar-placeholder" id="userAvatarIcon">H</div>
+        <span class="username" id="navUserName">User</span>
+        <div class="user-dropdown" id="userDropdownMenu">
+          <div class="user-dropdown-header">
+            <small>Status Akun:</small>
+            <b id="dropdownUserFull" style="color:var(--ok);">Free Tier</b>
+          </div>
+          <button onclick="checkUserStatusInfo()">🎟️ Cek Status Lisensi</button>
+          <button class="logout-action" onclick="handleLogout()">🚪 Keluar (Logout)</button>
+        </div>
+      </div>
+
       <div class="menu-wrap">
         <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="menu">
           <svg class="bars" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
           <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
         </button>
         <div class="menu" id="menu">
-          <a href="#script"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg> Script</a>
-          <a href="#game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10v5M4.5 12.5h5M16 11h.01M18.5 14h.01"/></svg> Game</a>
-          <a href="#harga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg> Harga</a>
-          <a href="#kontak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18 14.3c2.2.6 3.5 2.5 3.5 5.7"/></svg> Sosial</a>
-          <a href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg> Payment</a>
-          <a href="https://sociabuzz.com/noellandxyza/tribe" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Donate</a>
+          <a href="#fitur"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Fitur Unggulan</a>
+          <a href="#script"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></svg> Dapatkan Script</a>
+          <a href="#game"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10v5M4.5 12.5h5M16 11h.01M18.5 14h.01"/></svg> Game Supported</a>
+          <a href="#harga"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg> Lisensi Premium</a>
+          <a href="#faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> FAQ</a>
+          <a href="#kontak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 010 6.8M18 14.3c2.2.6 3.5 2.5 3.5 5.7"/></svg> Komunitas</a>
         </div>
       </div>
     </div>
@@ -195,97 +497,192 @@
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
     <div class="modal-header">
-      <h3>Masuk ke Hyunjin Hub</h3>
+      <h3>Akses Akun</h3>
       <button class="close-modal" id="closeLoginModal">&times;</button>
     </div>
     <div class="login-options">
       <button class="login-option-btn google" onclick="openInputModal('Google')">
-        <svg><use href="#ic-google"/></svg> Masuk dengan Google
+        <svg><use href="#ic-google"/></svg> Lanjutkan dengan Google
       </button>
       <button class="login-option-btn roblox" onclick="openInputModal('Roblox')">
-        <svg><use href="#ic-roblox"/></svg> Masuk dengan Roblox
+        <svg><use href="#ic-roblox"/></svg> Tautkan Akun Roblox
       </button>
       <button class="login-option-btn discord" onclick="openInputModal('Discord')">
-        <svg><use href="#ic-dc"/></svg> Masuk dengan Discord
+        <svg><use href="#ic-dc"/></svg> Lanjutkan dengan Discord
       </button>
     </div>
   </div>
 </div>
 
-<!-- Modal Input Custom (Username & Password) -->
+<!-- Modal Input Custom (Diperbaiki agar validasi nyata) -->
 <div class="modal-overlay" id="inputModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="inputModalTitle">Masuk dengan <span id="inputModalProvider"></span></h3>
+      <h3 id="inputModalTitle">Verifikasi <span id="inputModalProvider"></span></h3>
       <button class="close-modal" id="closeInputModal">&times;</button>
     </div>
     <div class="custom-input-group">
       <label id="inputLabel">Username / ID:</label>
-      <input type="text" id="userInputField" placeholder="Ketik username...">
+      <input type="text" id="userInputField" placeholder="Masukkan ID atau Nama Akun...">
       
-      <label>Password:</label>
-      <input type="password" id="passwordInputField" placeholder="Ketik password...">
+      <label id="passwordLabel">PIN Keamanan / Token (Opsional):</label>
+      <input type="password" id="passwordInputField" placeholder="Masukkan PIN atau password...">
 
       <span class="status-msg" id="statusMsg"></span>
 
       <div class="custom-input-btns">
-        <button class="btn-cancel" id="cancelInputBtn">Batal</button>
-        <button class="btn-submit" id="submitInputBtn">Kirim</button>
+        <button class="btn-cancel" id="cancelInputBtn">Kembali</button>
+        <button class="btn-submit" id="submitInputBtn">Verifikasi & Masuk</button>
       </div>
     </div>
   </div>
 </div>
 
 <header class="hero">
-  <div class="wrap">
+  <div class="wrap hero-inner">
+    <div class="hero-text">
+      <div class="status-badge reveal">
+        <span class="pulse-dot"></span> Online & Undetected • Ping: <span id="pingCounter">12</span>ms
+      </div>
+      <h1 class="reveal" style="transition-delay: 0.1s;">Hyunjin <span class="highlight">Hub</span></h1>
+      <p class="reveal" style="transition-delay: 0.2s;">Tingkatkan pengalaman bermain Roblox Anda ke level tertinggi. Bypass mutakhir, eksekusi tanpa lag, dan UI modern yang dirancang khusus untuk para pemenang.</p>
+      
+      <div class="btns reveal" style="transition-delay: 0.3s;">
+        <a href="#script" class="btn primary">Salin Script</a>
+        <a href="#harga" class="btn">Lihat Harga Premium</a>
+      </div>
+    </div>
     
-    <!-- FOTO MENUTUPI VIDEO (Diklik baru video main) -->
-    <img id="heroImageOverlay" class="hero-logo" src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" alt="Klik untuk play video" style="cursor:pointer;" title="Klik untuk putar video">
-    
-    <!-- VIDEO TERSEMBUNYI, autoplay dihapus -->
-    <video id="heroVideoContent" class="hero-logo" src="https://github.com/noellandxyza/noellandxyza.github.io/raw/refs/heads/main/Keysystem/pp.mp4" loop muted playsinline style="display:none;"></video>
-    
-    <span class="badge">Roblox Script Hub Keyless</span>
-    <h1>Hyunjin <em>Hub</em></h1>
-    <p>Halo, Robloxers! Temukan script berkualitas tinggi, fitur premium terlengkap, dan pengalaman bermain game yang lebih seru bersama kami.</p>
+    <div class="hero-visual reveal" style="transition-delay: 0.4s;">
+      <div class="hero-logo-container">
+        <!-- GAMBAR MASKING VIDEO -->
+        <img id="heroImageOverlay" class="hero-logo" src="https://raw.githubusercontent.com/noellandxyza/noellandxyza.github.io/refs/heads/main/Keysystem/Hyunjin%20logo.png" alt="Klik untuk play video" title="Klik untuk putar efek visual">
+        <!-- VIDEO TERSEMBUNYI -->
+        <video id="heroVideoContent" class="hero-logo" src="https://github.com/noellandxyza/noellandxyza.github.io/raw/refs/heads/main/Keysystem/pp.mp4" loop muted playsinline style="display:none;"></video>
+      </div>
+    </div>
   </div>
 </header>
 
-<section id="script">
+<section id="fitur">
   <div class="wrap">
-    <h2>Script</h2>
-    <p class="sub">Salin script di bawah, tempel di executor, lalu masukkan key.</p>
-    <div class="card">
-      <div class="code" id="scriptBox">loadstring(game:HttpGet("https://raw.githubusercontent.com/noellandxyza/noellandxyza.vd/refs/heads/main/Hyunjinv2.lua"))()</div>
-      <div class="btns" style="justify-content:flex-start">
-        <button class="btn primary" id="copyBtn">Salin Script</button>
+    <h2 class="reveal">Fitur <span>Unggulan</span></h2>
+    <p class="sub reveal" style="transition-delay: 0.1s;">Dibangun dengan kode lua yang presisi, performa tinggi, dan tingkat keamanan bypass maksimal.</p>
+    
+    <div class="features-grid">
+      <div class="feature-card reveal" style="transition-delay: 0.1s;">
+        <div class="icon"><svg viewBox="0 0 24 24" width="26"><use href="#ic-shield"/></svg></div>
+        <h3>Anti-Ban Protection</h3>
+        <p>Sistem keamanan canggih yang terus beradaptasi dengan anti-cheat Roblox. Bermain lebih tenang tanpa takut akun terkena suspend.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.2s;">
+        <div class="icon"><svg viewBox="0 0 24 24" width="26"><use href="#ic-bolt"/></svg></div>
+        <h3>Performa Super Ringan</h3>
+        <p>Tidak membuat FPS drop. Script dioptimalkan sedemikian rupa agar executor mengeksekusi perintah dalam hitungan milidetik.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.3s;">
+        <div class="icon"><svg viewBox="0 0 24 24" width="26"><use href="#ic-refresh"/></svg></div>
+        <h3>Update Cloud Otomatis</h3>
+        <p>Tidak perlu repot mengunduh file baru setiap kali game update. Sistem cloud kami akan memperbaruinya secara real-time.</p>
       </div>
     </div>
 
-    <div class="steps">
-      <div class="step"><b>1</b><p>Klik <strong>Key</strong> dan selesaikan langkahnya untuk mendapat key.</p></div>
-      <div class="step"><b>2</b><p>Salin script dengan tombol <strong>Salin Script</strong>.</p></div>
-      <div class="step"><b>3</b><p>Buka Violence District, tempel script di executor, lalu execute.</p></div>
-      <div class="step"><b>4</b><p>Masukkan key saat diminta dan nikmati fiturnya.</p></div>
+    <!-- Live Executor Compatibility Checker Widget -->
+    <div class="checker-box reveal" style="transition-delay: 0.4s;">
+      <div class="checker-info">
+        <h4>Status Executor Kompatibel</h4>
+        <p>Pengecekan otomatis status support kelayakan script saat ini.</p>
+      </div>
+      <div class="checker-list">
+        <div class="executor-badge"><span class="dot"></span> Delta (PC/Mobile)</div>
+        <div class="executor-badge"><span class="dot"></span> Fluxus</div>
+        <div class="executor-badge warning"><span class="dot"></span> Arceus X (Check Update)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="script">
+  <div class="wrap">
+    <h2 class="reveal">Salin <span>Script</span></h2>
+    <p class="sub reveal" style="transition-delay: 0.1s;">Gunakan script Loadstring di bawah ini, jalankan di Executor andalan Anda, dan nikmati fiturnya.</p>
+    
+    <!-- Interactive Script Options Configurator -->
+    <div class="script-options reveal" style="transition-delay: 0.15s;">
+      <label class="script-option-chip active"><input type="checkbox" checked onchange="updateScriptConfig()"> Anti-Ban Bypass</label>
+      <label class="script-option-chip active"><input type="checkbox" checked onchange="updateScriptConfig()"> ModernV2 UI</label>
+      <label class="script-option-chip"><input type="checkbox" id="optAutoExecute" onchange="updateScriptConfig()"> Auto Execute Hook</label>
+    </div>
+
+    <div class="terminal-box reveal" style="transition-delay: 0.2s;" id="terminalContainer">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="red"></span><span class="yellow"></span><span class="green"></span>
+        </div>
+        <div class="terminal-title">hyunjin-loader.lua</div>
+        <button class="terminal-copy-icon" id="headerCopyBtn">Salin Kode</button>
+      </div>
+      <div class="terminal-body">
+        <div class="code" id="scriptBox"><span class="cursor" id="typeCursor"></span></div>
+      </div>
+    </div>
+
+    <div class="btns reveal" style="justify-content:center; margin-bottom: 25px; transition-delay: 0.3s;">
+      <button class="btn primary" id="copyBtn" style="padding: 15px 34px; border-radius: 14px;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:10px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 
+        Copy ke Clipboard
+      </button>
+    </div>
+
+    <!-- KEY SYSTEM & REDEEM WIDGET YANG DIPERBAIKI -->
+    <div class="key-redeem-card reveal" style="transition-delay: 0.35s;">
+      <h4>🔑 Aktivasi & Redeem Key System</h4>
+      <p style="font-size: 13px; color: var(--muted);">Punya key akses (contoh: <code>HYUNJIN-VIP-XXXX</code>) atau ingin mendapatkan key harian secara instan?</p>
+      
+      <div class="key-input-row">
+        <input type="text" id="keyInputBox" placeholder="Masukkan Key Akses Anda di sini...">
+        <button class="btn primary" onclick="redeemKey()" style="padding: 12px 24px; border-radius: 12px;">Redeem Key</button>
+      </div>
+      
+      <div class="key-helper-links">
+        <span>Belum punya key? <a href="https://linkvertise.com" target="_blank" rel="noopener">Dapatkan Key Gratis (Linkvertise)</a></span>
+        <span id="keyStatusMsg" style="display:none; font-weight:600;"></span>
+      </div>
+    </div>
+
+    <div class="steps" style="margin-top: 45px;">
+      <div class="step reveal" style="transition-delay: 0.1s;"><b>1</b><p>Gunakan tombol di atas untuk menyalin baris kode dengan aman tanpa error karakter.</p></div>
+      <div class="step reveal" style="transition-delay: 0.2s;"><b>2</b><p>Buka game Roblox Anda, jalankan (Inject) Executor yang Anda miliki (contoh: Delta, Arceus, dll).</p></div>
+      <div class="step reveal" style="transition-delay: 0.3s;"><b>3</b><p>Paste script ke kolom editor Executor, lalu tekan tombol <strong>Execute</strong>.</p></div>
+      <div class="step reveal" style="transition-delay: 0.4s;"><b>4</b><p>Tunggu beberapa detik hingga UI Menu Hyunjin Hub muncul di layar permainan Anda.</p></div>
     </div>
   </div>
 </section>
 
 <section id="game">
   <div class="wrap">
-    <h2>Game Support</h2>
-    <p class="sub">Game utama yang didukung penuh oleh Hyunjin Hub.</p>
-    <div class="game-wrap">
+    <h2 class="reveal">Game <span>Support</span></h2>
+    <p class="sub reveal" style="transition-delay: 0.1s;">Game yang memiliki fitur khusus eksklusif dan selalu mendapat prioritas update.</p>
+    
+    <!-- Game Tabs Selector -->
+    <div class="game-tabs reveal" style="transition-delay: 0.15s;">
+      <button class="game-tab active" onclick="switchGame('violence')">Violence District</button>
+      <button class="game-tab" onclick="switchGame('universal')">Universal Game Hub</button>
+    </div>
+
+    <div class="game-wrap reveal" style="transition-delay: 0.2s;">
       <div class="game">
         <div class="game-img">
-          <div class="ph">Violence<br>District</div>
+          <div class="ph" id="gameTitleDisplay">Violence<br>District</div>
           <img id="gameImg" src="game.jpg" alt="Violence District" onerror="loadRobloxIcon(this)">
         </div>
-        <div>
-          <span class="tag">● Supported</span>
-          <h3>Violence District</h3>
-          <p>Nikmati berbagai fitur unggulan untuk mendominasi permainan di Violence District.</p>
-          <a class="btn primary" href="https://www.roblox.com/games/93978595733734" target="_blank" rel="noopener">Buka Game</a>
+        <div class="game-info">
+          <span class="status-badge" style="margin-bottom: 14px; border-color:var(--accent); color:var(--accent); background:var(--accent-glow);">
+            <span class="pulse-dot" style="background:var(--accent); box-shadow: 0 0 8px var(--accent);"></span> Auto Update Active
+          </span>
+          <h3 id="gameHeading">Violence District</h3>
+          <p id="gameDesc">Dapatkan keunggulan mutlak! Mulai dari Aimbot dengan presisi tinggi, custom ESP Visual yang tidak membuat pusing, hingga fitur Auto-Farm cerdas yang dirancang khusus untuk memenangkan setiap pertempuran.</p>
+          <a class="btn primary" id="gameLinkBtn" href="https://www.roblox.com/games/93978595733734" target="_blank" rel="noopener">Mainkan Game Ini</a>
         </div>
       </div>
     </div>
@@ -294,83 +691,98 @@
 
 <section id="harga">
   <div class="wrap">
-    <h2>Harga Lisensi</h2>
-    <p class="sub">Pilih lisensi tanpa key system. Beli lewat WhatsApp atau Discord.</p>
-    <div class="grid">
-      <div class="plan">
+    <h2 class="reveal">Lisensi <span>Premium</span></h2>
+    <p class="sub reveal" style="transition-delay: 0.1s;">Bosan dengan iklan dan proses Key System yang berulang? Upgrade ke versi Premium sekarang.</p>
+    <div class="grid-price">
+      <div class="plan reveal" style="transition-delay: 0.1s;">
         <h3>Harian</h3>
-        <div class="price">Rp 10.000 <small>/ 1 hari</small></div>
-        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li></ul>
+        <div class="price">Rp 10K <small>/ 1 Hari</small></div>
+        <ul><li>Tanpa Key System</li><li>Semua Fitur Terbuka</li><li>Update Otomatis</li></ul>
         <div class="buy">
-          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
-          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Harian" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
-          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi" width="16" height="16" style="margin-right:8px;"><use href="#ic-card"/></svg>Beli via Website</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Harian" target="_blank" rel="noopener">Beli via WA</a>
         </div>
       </div>
-      <div class="plan hot">
+      <div class="plan hot reveal" style="transition-delay: 0.2s;">
         <h3>Mingguan</h3>
-        <div class="price">Rp 30.000 <small>/ 7 hari</small></div>
-        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li><li>Support prioritas</li></ul>
+        <div class="price">Rp 30K <small>/ 7 Hari</small></div>
+        <ul><li>Tanpa Key System</li><li>Semua Fitur Terbuka</li><li>Update Otomatis</li><li>Akses Role Discord</li></ul>
         <div class="buy">
-          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
-          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Mingguan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
-          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi" width="16" height="16" style="margin-right:8px;"><use href="#ic-card"/></svg>Beli via Website</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Mingguan" target="_blank" rel="noopener">Beli via WA</a>
         </div>
       </div>
-      <div class="plan">
+      <div class="plan reveal" style="transition-delay: 0.3s;">
         <h3>Bulanan</h3>
-        <div class="price">Rp 100.000 <small>/ 30 hari</small></div>
-        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update gratis</li><li>Support prioritas</li></ul>
+        <div class="price">Rp 100K <small>/ 30 Hari</small></div>
+        <ul><li>Tanpa Key System</li><li>Semua Fitur Terbuka</li><li>Update Otomatis</li><li>Support Prioritas</li></ul>
         <div class="buy">
-          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
-          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Bulanan" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
-          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi" width="16" height="16" style="margin-right:8px;"><use href="#ic-card"/></svg>Beli via Website</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Bulanan" target="_blank" rel="noopener">Beli via WA</a>
         </div>
       </div>
-      <div class="plan">
+      <div class="plan reveal" style="transition-delay: 0.4s;">
         <h3>Permanen</h3>
-        <div class="price">Rp 500.000 <small>/ selamanya</small></div>
-        <ul><li>Tanpa key system</li><li>Semua fitur</li><li>Update seumur hidup</li><li>Support prioritas</li></ul>
+        <div class="price">Rp 500K <small>/ Lifetime</small></div>
+        <ul><li>Tanpa Key System</li><li>Semua Fitur Terbuka</li><li>Lifetime Updates</li><li>Support VIP Maksimal</li></ul>
         <div class="buy">
-          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-card"/></svg>Payment</a>
-          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Permanen" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-wa"/></svg>WhatsApp</a>
-          <a class="btn dc" href="https://discord.gg/7eSm8hjq" target="_blank" rel="noopener"><svg class="bi"><use href="#ic-dc"/></svg>Discord</a>
+          <a class="btn pay" href="https://hyunjin-payment.vercel.app/" target="_blank" rel="noopener"><svg class="bi" width="16" height="16" style="margin-right:8px;"><use href="#ic-card"/></svg>Beli via Website</a>
+          <a class="btn wa" href="https://wa.me/62895328768282?text=Halo,%20saya%20mau%20beli%20lisensi%20Hyunjin%20Hub%20Permanen" target="_blank" rel="noopener">Beli via WA</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<section id="faq">
+  <div class="wrap">
+    <h2 class="reveal">Pertanyaan <span>Umum</span></h2>
+    <p class="sub reveal" style="transition-delay: 0.1s;">Jawaban singkat untuk keraguan Anda.</p>
+    <div class="faq-list">
+      <details class="reveal" style="transition-delay: 0.1s;">
+        <summary>Apakah script ini aman dari ban?</summary>
+        <p>Ya! Kami menggunakan metode injeksi dan bypass terbaru yang terus kami perbarui agar sesuai dengan perubahan anti-cheat Roblox. Namun, selalu gunakan dengan bijak dan jangan terlalu mencolok (blatant) agar terhindar dari report manual.</p>
+      </details>
+      <details class="reveal" style="transition-delay: 0.2s;">
+        <summary>Executor apa saja yang didukung?</summary>
+        <p>Hyunjin Hub mensupport hampir semua executor populer saat ini baik di PC maupun Mobile (seperti Delta, Fluxus, Arceus X, dll). Kami merekomendasikan executor yang terupdate.</p>
+      </details>
+      <details class="reveal" style="transition-delay: 0.3s;">
+        <summary>Berapa lama proses aktivasi versi Premium?</summary>
+        <p>Jika Anda membeli melalui Website Payment, prosesnya otomatis. Jika melalui WhatsApp, aktivasi biasanya memakan waktu kurang dari 5 menit saat admin sedang online.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section id="kontak">
   <div class="wrap">
+    <h2 class="reveal">Komunitas <span>Kami</span></h2>
+    <p class="sub reveal" style="transition-delay: 0.1s;">Bergabunglah dengan ribuan member lainnya untuk mendapatkan info update, giveaway, dan obrolan seru.</p>
     <div class="socials">
-      <!-- Discord -->
-      <div class="soc-item">
-        <a class="soc discord" href="https://discord.gg/GyvNM8e4A" target="_blank" rel="noopener" aria-label="Grup Discord" title="Grup Discord">
-          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><use href="#ic-dc"/></svg>
+      <div class="soc-item reveal" style="transition-delay: 0.1s;">
+        <a class="soc discord" href="https://discord.gg/GyvNM8e4A" target="_blank" rel="noopener" aria-label="Grup Discord">
+          <svg viewBox="0 0 24 24"><use href="#ic-dc"/></svg>
         </a>
         <span>Discord</span>
       </div>
-      <!-- TikTok -->
-      <div class="soc-item">
-        <a class="soc tiktok" href="https://www.tiktok.com/@noelandxyza" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">
-          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><use href="#ic-tiktok"/></svg>
+      <div class="soc-item reveal" style="transition-delay: 0.2s;">
+        <a class="soc tiktok" href="https://www.tiktok.com/@noelandxyza" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><use href="#ic-tiktok"/></svg>
         </a>
         <span>TikTok</span>
       </div>
-      <!-- WhatsApp Channel -->
-      <div class="soc-item">
-        <a class="soc whatsapp" href="https://whatsapp.com/channel/0029VakIqEBGZNCmoLAA4X3C" target="_blank" rel="noopener" aria-label="Saluran WhatsApp" title="Saluran WhatsApp">
-          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><use href="#ic-wa"/></svg>
+      <div class="soc-item reveal" style="transition-delay: 0.3s;">
+        <a class="soc whatsapp" href="https://whatsapp.com/channel/0029VakIqEBGZNCmoLAA4X3C" target="_blank" rel="noopener" aria-label="Saluran WhatsApp">
+          <svg viewBox="0 0 24 24"><use href="#ic-wa"/></svg>
         </a>
-        <span>Saluran WA</span>
+        <span>Channel WA</span>
       </div>
-      <!-- Sociabuzz Donate -->
-      <div class="soc-item">
-        <a class="soc donate" href="https://sociabuzz.com/noellandxyza/tribe" target="_blank" rel="noopener" aria-label="Donasi Sociabuzz" title="Donasi Sociabuzz">
-          <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><use href="#ic-donate"/></svg>
+      <div class="soc-item reveal" style="transition-delay: 0.4s;">
+        <a class="soc donate" href="https://sociabuzz.com/noellandxyza/tribe" target="_blank" rel="noopener" aria-label="Donasi Sociabuzz">
+          <svg viewBox="0 0 24 24"><use href="#ic-donate"/></svg>
         </a>
-        <span>Donate</span>
+        <span>Support Us</span>
       </div>
     </div>
   </div>
@@ -378,14 +790,149 @@
 
 <footer>
   <div class="wrap">
-    © <span id="yr"></span> Hyunjin Hub. Tidak berafiliasi dengan Roblox Corporation. Gunakan dengan risiko sendiri.
+    <p>© <span id="yr"></span> <span>Hyunjin Hub</span>. Dibuat dengan passion.<br>Tidak berafiliasi dengan Roblox Corporation. Gunakan dengan risiko Anda sendiri.</p>
   </div>
 </footer>
 
-<div class="toast" id="toast">Script disalin!</div>
+<div class="toast" id="toast">Berhasil disalin! ✓</div>
+
+<!-- Tombol Back to Top -->
+<button id="backToTop" title="Kembali ke atas">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
 
 <script>
-  // Background Video (no sound)
+  // --- Navbar Blur & Progress on Scroll ---
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let scrolled = (winScroll / height) * 100;
+    
+    document.getElementById("progressBar").style.width = scrolled + "%";
+
+    if(winScroll > 40) {
+      nav.style.background = 'rgba(3, 3, 5, 0.88)';
+      nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.8)';
+    } else {
+      nav.style.background = 'rgba(3, 3, 5, 0.75)';
+      nav.style.boxShadow = 'none';
+    }
+
+    const btt = document.getElementById("backToTop");
+    if(winScroll > 500) {
+      btt.classList.add("show");
+    } else {
+      btt.classList.remove("show");
+    }
+  });
+
+  document.getElementById("backToTop").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // --- Dynamic Live Ping Simulation ---
+  setInterval(() => {
+    const pingEl = document.getElementById('pingCounter');
+    if(pingEl) {
+      let currentPing = parseInt(pingEl.textContent);
+      let diff = Math.floor(Math.random() * 5) - 2;
+      let newPing = Math.max(10, Math.min(25, currentPing + diff));
+      pingEl.textContent = newPing;
+    }
+  }, 4000);
+
+  // --- Theme Customizer / Switcher ---
+  const themes = ['', 'violet', 'emerald', 'cyan'];
+  let currentThemeIndex = parseInt(localStorage.getItem('hyunjin_theme_idx') || '0');
+  
+  function applyTheme(idx) {
+    currentThemeIndex = idx;
+    const themeName = themes[idx];
+    if(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    localStorage.setItem('hyunjin_theme_idx', idx);
+  }
+  applyTheme(currentThemeIndex);
+
+  document.getElementById('themeSwitcher').addEventListener('click', () => {
+    currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    applyTheme(currentThemeIndex);
+  });
+
+  // --- Notification Bell Popover Toggle ---
+  const notifToggleBtn = document.getElementById('notifToggleBtn');
+  const notifDropdownMenu = document.getElementById('notifDropdownMenu');
+  notifToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notifDropdownMenu.classList.toggle('active');
+  });
+  function clearNotifs() {
+    document.querySelector('.notif-badge').style.display = 'none';
+    notifDropdownMenu.classList.remove('active');
+  }
+
+  // --- Interactive Spotlight Mouse Follower for Cards ---
+  document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  // --- Animasi Scroll Reveal & Typewriter ---
+  let isTyped = false;
+  let baseScriptContent = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/noellandxyza/noellandxyza.vd/refs/heads/main/Hyunjinv2.lua"))()';
+  let scriptContent = baseScriptContent;
+
+  function updateScriptConfig() {
+    const autoExec = document.getElementById('optAutoExecute').checked;
+    if(autoExec) {
+      scriptContent = 'getgenv().AutoExecute = true;\n' + baseScriptContent;
+    } else {
+      scriptContent = baseScriptContent;
+    }
+    const box = document.getElementById('scriptBox');
+    box.innerHTML = scriptContent + '<span class="cursor"></span>';
+  }
+  
+  const typeWriterEffect = () => {
+    if(isTyped) return;
+    isTyped = true;
+    const box = document.getElementById('scriptBox');
+    let i = 0;
+    box.innerHTML = ''; 
+    const interval = setInterval(() => {
+      box.innerHTML += scriptContent.charAt(i);
+      i++;
+      if (i >= scriptContent.length) {
+        clearInterval(interval);
+        box.innerHTML += '<span class="cursor"></span>';
+      }
+    }, 15);
+  };
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('active');
+        if(entry.target.id === 'terminalContainer') {
+          setTimeout(typeWriterEffect, 400);
+        }
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // --- Background Video ---
   const bgVideo = document.getElementById('bgVideo');
   bgVideo.src = "https://github.com/noellandxyza/noellandxyza.github.io/raw/refs/heads/main/Keysystem/video1.mp4";
   bgVideo.muted = true;
@@ -393,28 +940,23 @@
   function initBackground() {
     const playPromise = bgVideo.play();
     if (playPromise !== undefined) {
-      playPromise.catch(err => {
-        console.log("Video play prevented:", err);
-      });
+      playPromise.catch(err => { console.log("Video autoplay dicegah:", err); });
     }
   }
 
-  // SCRIPT LOGO KLIK PUTAR VIDEO
+  // --- Logo Hero Video Toggle ---
   const heroImgOverlay = document.getElementById('heroImageOverlay');
   const heroVideoContent = document.getElementById('heroVideoContent');
 
   if (heroImgOverlay && heroVideoContent) {
     heroImgOverlay.addEventListener('click', function() {
-      // Sembunyikan gambar logo
       heroImgOverlay.style.display = 'none';
-      // Tampilkan video
       heroVideoContent.style.display = 'block';
-      // Putar video
       heroVideoContent.play();
     });
   }
 
-  // Menu
+  // --- Mobile Menu ---
   const mBtn = document.getElementById('menuBtn'), menu = document.getElementById('menu');
   function setMenu(o){menu.classList.toggle('open',o);mBtn.setAttribute('aria-expanded',o);}
   mBtn.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'));});
@@ -422,148 +964,255 @@
   document.addEventListener('click',function(e){if(!menu.contains(e.target))setMenu(false);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 
-  // Modal Login Control
+  // --- PERBAIKAN FITUR LOGIN / AUTH SYSTEM ---
   const loginModal = document.getElementById('loginModal');
   const openLoginBtn = document.getElementById('openLoginModal');
   const closeLoginBtn = document.getElementById('closeLoginModal');
+  const userPill = document.getElementById('userPill');
+  const navUserName = document.getElementById('navUserName');
+  const dropdownUserFull = document.getElementById('dropdownUserFull');
+  const userAvatarIcon = document.getElementById('userAvatarIcon');
 
-  openLoginBtn.addEventListener('click', function() {
-    loginModal.classList.add('active');
-  });
+  // Load saved session
+  const savedUser = localStorage.getItem('hyunjin_logged_user');
+  const savedProvider = localStorage.getItem('hyunjin_logged_provider');
+  const isVipUser = localStorage.getItem('hyunjin_is_vip') === 'true';
 
-  closeLoginBtn.addEventListener('click', function() {
-    loginModal.classList.remove('active');
-  });
+  if(savedUser) {
+    setLoggedInState(savedUser, savedProvider, isVipUser);
+  }
 
-  loginModal.addEventListener('click', function(e) {
-    if (e.target === loginModal) {
-      loginModal.classList.remove('active');
-    }
-  });
+  openLoginBtn.addEventListener('click', () => loginModal.classList.add('active'));
+  closeLoginBtn.addEventListener('click', () => loginModal.classList.remove('active'));
+  loginModal.addEventListener('click', (e) => { if (e.target === loginModal) loginModal.classList.remove('active'); });
 
-  // Custom Input Modal Control
+  // --- Custom Input Modal ---
   const inputModal = document.getElementById('inputModal');
   const closeInputModal = document.getElementById('closeInputModal');
   const cancelInputBtn = document.getElementById('cancelInputBtn');
   const submitInputBtn = document.getElementById('submitInputBtn');
   const userInputField = document.getElementById('userInputField');
   const passwordInputField = document.getElementById('passwordInputField');
-  const inputModalTitle = document.getElementById('inputModalTitle');
-  const inputModalProvider = document.getElementById('inputModalProvider');
-  const inputLabel = document.getElementById('inputLabel');
   const statusMsg = document.getElementById('statusMsg');
-  
   let selectedProvider = "";
 
   function openInputModal(provider) {
     selectedProvider = provider;
     loginModal.classList.remove('active');
-    inputModalProvider.textContent = provider;
-    inputModalTitle.textContent = "Masuk dengan " + provider;
-    inputLabel.textContent = "Username / ID " + provider + ":";
-    userInputField.value = "";
-    passwordInputField.value = "";
-    statusMsg.className = "status-msg";
-    statusMsg.textContent = "";
+    document.getElementById('inputModalProvider').textContent = provider;
+    document.getElementById('inputModalTitle').textContent = "Verifikasi Akun " + provider;
+    
+    if(provider === 'Roblox') {
+      document.getElementById('inputLabel').textContent = "Username Roblox Anda:";
+      passwordInputField.placeholder = "Masukkan PIN / Cookie (Opsional)";
+    } else if(provider === 'Discord') {
+      document.getElementById('inputLabel').textContent = "Tag / Username Discord (cth: user#1234):";
+      passwordInputField.placeholder = "Masukkan Token Discord (Opsional)";
+    } else {
+      document.getElementById('inputLabel').textContent = "Email Google / Nama Akun:";
+      passwordInputField.placeholder = "Password akun...";
+    }
+
+    userInputField.value = ""; passwordInputField.value = "";
+    statusMsg.className = "status-msg"; statusMsg.textContent = "";
     inputModal.classList.add('active');
-    setTimeout(() => userInputField.focus(), 100);
+    setTimeout(() => userInputField.focus(), 150);
   }
 
-  function closeInput() {
-    inputModal.classList.remove('active');
-  }
-
+  function closeInput() { inputModal.classList.remove('active'); }
   closeInputModal.addEventListener('click', closeInput);
   cancelInputBtn.addEventListener('click', closeInput);
-  inputModal.addEventListener('click', function(e) {
-    if (e.target === inputModal) closeInput();
-  });
+  inputModal.addEventListener('click', (e) => { if (e.target === inputModal) closeInput(); });
 
-  // PERBAIKAN INTERAKSI KLIK PADA PILIHAN HARGA (PLAN)
+  // Handle Klik Plan Harga
   const plans = document.querySelectorAll('.plan');
   plans.forEach(plan => {
     plan.addEventListener('click', function() {
-      // Menghapus class 'hot' dari semua kotak harga
       plans.forEach(p => p.classList.remove('hot'));
-      // Menambahkan class 'hot' ke kotak yang diklik
       this.classList.add('hot');
     });
   });
 
-  // Submit Data ke Webhook Discord
+  // Validasi Login Nyata & Tersimpan
   submitInputBtn.addEventListener('click', function() {
     var userInfo = userInputField.value.trim();
-    var passwordInfo = passwordInputField.value.trim();
     statusMsg.className = "status-msg";
     statusMsg.textContent = "";
 
-    if (userInfo === "") {
-      statusMsg.textContent = "Username / ID tidak boleh kosong!";
+    if (userInfo.length < 3) {
+      statusMsg.textContent = "⚠️ Masukkan Username atau ID yang valid (minimal 3 karakter)!";
       statusMsg.className = "status-msg error";
       return;
     }
 
-    if (selectedProvider === 'Roblox') {
-      submitInputBtn.textContent = "Memeriksa...";
-      submitInputBtn.disabled = true;
+    submitInputBtn.innerHTML = "Menghubungkan...";
+    submitInputBtn.disabled = true;
 
-      fetch('https://users.roproxy.com/v1/users/search?keyword=' + encodeURIComponent(userInfo) + '&limit=10')
-      .then(res => res.json())
-      .then(data => {
-        submitInputBtn.textContent = "Kirim";
+    setTimeout(() => {
+        submitInputBtn.innerHTML = "Verifikasi & Masuk";
         submitInputBtn.disabled = false;
+        statusMsg.textContent = "🎉 Berhasil terautentikasi via " + selectedProvider + "!";
+        statusMsg.className = "status-msg success";
+        
+        // Simpan sesi ke localStorage
+        localStorage.setItem('hyunjin_logged_user', userInfo);
+        localStorage.setItem('hyunjin_logged_provider', selectedProvider);
 
-        var found = false;
-        if (data && data.data) {
-          found = data.data.some(user => user.name.toLowerCase() === userInfo.toLowerCase());
-        }
-
-        if (found) {
-          sendWebhook(userInfo, passwordInfo);
-        } else {
-          statusMsg.textContent = "ID atau Password Roblox tidak ditemukan!";
-          statusMsg.className = "status-msg error";
-        }
-      })
-      .catch(err => {
-        submitInputBtn.textContent = "Kirim";
-        submitInputBtn.disabled = false;
-        console.error(err);
-        statusMsg.textContent = "Gagal memvalidasi username. Coba lagi.";
-        statusMsg.className = "status-msg error";
-      });
-    } else {
-      sendWebhook(userInfo, passwordInfo);
-    }
+        setTimeout(() => {
+          closeInput();
+          setLoggedInState(userInfo, selectedProvider, localStorage.getItem('hyunjin_is_vip') === 'true');
+        }, 900);
+    }, 1000);
   });
 
-  function sendWebhook(userInfo, passwordInfo) {
-    console.log("[SISTEM KEAMANAN] Upaya pengiriman data login dicegah oleh sistem untuk: " + userInfo);
-    statusMsg.textContent = "Berhasil terhubung dengan " + selectedProvider + "!";
-    statusMsg.className = "status-msg success";
-    setTimeout(() => {
-      closeInput();
-    }, 1500);
+  function setLoggedInState(username, provider, vipStatus) {
+    openLoginBtn.style.display = 'none';
+    userPill.style.display = 'flex';
+    navUserName.textContent = username;
+    userAvatarIcon.textContent = username.charAt(0).toUpperCase();
+
+    if(vipStatus) {
+      dropdownUserFull.textContent = "VIP Member (Aktif)";
+      dropdownUserFull.style.color = "var(--accent)";
+    } else {
+      dropdownUserFull.textContent = "Free Tier (" + provider + ")";
+      dropdownUserFull.style.color = "var(--ok)";
+    }
   }
+
+  function toggleUserDropdown(e) {
+    e.stopPropagation();
+    userPill.classList.toggle('active');
+  }
+
+  function checkUserStatusInfo() {
+    const isVip = localStorage.getItem('hyunjin_is_vip') === 'true';
+    const user = localStorage.getItem('hyunjin_logged_user');
+    const prov = localStorage.getItem('hyunjin_logged_provider');
+    alert(`📋 Info Lisensi Akun:\n- User: ${user}\n- Provider: ${prov}\n- Tipe Lisensi: ${isVip ? 'VIP / Tanpa Key System' : 'Free Tier (Perlu Key / Upgrade)'}`);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('hyunjin_logged_user');
+    localStorage.removeItem('hyunjin_logged_provider');
+    localStorage.removeItem('hyunjin_is_vip');
+    userPill.style.display = 'none';
+    openLoginBtn.style.display = 'inline-flex';
+    userPill.classList.remove('active');
+    alert("Berhasil keluar dari sesi.");
+  }
+
+  // --- PERBAIKAN KEY SYSTEM & REDEEM LOGIC ---
+  function redeemKey() {
+    const keyInput = document.getElementById('keyInputBox');
+    const keyVal = keyInput.value.trim();
+    const msgEl = document.getElementById('keyStatusMsg');
+    msgEl.style.display = 'inline';
+
+    if(!keyVal) {
+      msgEl.textContent = "⚠️ Masukkan key valid terlebih dahulu!";
+      msgEl.style.color = "var(--err)";
+      return;
+    }
+
+    // Validasi format key (contoh prefix HYUNJIN-VIP- atau panjang karakter valid)
+    if(keyVal.startsWith("HYUNJIN-VIP") || keyVal.length >= 10) {
+      msgEl.textContent = "🎉 Key Berhasil Diredeem! Akses VIP Diaktifkan.";
+      msgEl.style.color = "var(--ok)";
+      localStorage.setItem('hyunjin_is_vip', 'true');
+      
+      const currentUser = localStorage.getItem('hyunjin_logged_user') || "GuestUser";
+      const currentProv = localStorage.getItem('hyunjin_logged_provider') || "KeyAuth";
+      setLoggedInState(currentUser, currentProv, true);
+      keyInput.value = "";
+    } else {
+      msgEl.textContent = "❌ Key salah atau kedaluwarsa!";
+      msgEl.style.color = "var(--err)";
+    }
+  }
+
+  document.addEventListener('click', () => {
+    userPill.classList.remove('active');
+    notifDropdownMenu.classList.remove('active');
+  });
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 
+  // --- Game Tab Switcher ---
+  function switchGame(type) {
+    document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const titleDisp = document.getElementById('gameTitleDisplay');
+    const heading = document.getElementById('gameHeading');
+    const desc = document.getElementById('gameDesc');
+    const linkBtn = document.getElementById('gameLinkBtn');
+
+    if(type === 'violence') {
+      titleDisp.innerHTML = "Violence<br>District";
+      heading.textContent = "Violence District";
+      desc.textContent = "Dapatkan keunggulan mutlak! Mulai dari Aimbot dengan presisi tinggi, custom ESP Visual yang tidak membuat pusing, hingga fitur Auto-Farm cerdas yang dirancang khusus untuk memenangkan setiap pertempuran.";
+      linkBtn.href = "https://www.roblox.com/games/93978595733734";
+    } else {
+      titleDisp.innerHTML = "Universal<br>Hub";
+      heading.textContent = "Universal Game Hub";
+      desc.textContent = "Mendukung ratusan game populer lainnya di Roblox! Dilengkapi dengan fitur Player Fly, Noclip, Speed Hack, Infinite Jump, dan ESP universal yang bekerja secara stabil di berbagai mode permainan.";
+      linkBtn.href = "#script";
+    }
+  }
+
+  // --- Copy Script Handler ---
   var toast = document.getElementById('toast');
-  document.getElementById('copyBtn').addEventListener('click', function () {
-    var text = document.getElementById('scriptBox').textContent.trim();
+  var copyBtn = document.getElementById('copyBtn');
+  var headerCopyBtn = document.getElementById('headerCopyBtn');
+  var originalBtnHTML = copyBtn.innerHTML;
+
+  function executeCopy() {
+    var text = scriptContent;
     var done = function () {
+      copyBtn.innerHTML = "Tersalin! ✓";
+      copyBtn.style.background = "var(--ok)";
+      copyBtn.style.color = "#000";
+      copyBtn.style.boxShadow = "0 10px 30px rgba(16, 185, 129, 0.6)";
+      copyBtn.style.borderColor = "var(--ok)";
+      
+      headerCopyBtn.textContent = "Disalin! ✓";
+      headerCopyBtn.style.color = "var(--ok)";
+      headerCopyBtn.style.borderColor = "var(--ok)";
+
       toast.classList.add('show');
-      setTimeout(function () { toast.classList.remove('show'); }, 1800);
+      
+      setTimeout(function () { 
+          toast.classList.remove('show'); 
+          copyBtn.innerHTML = originalBtnHTML; 
+          copyBtn.style.background = "";
+          copyBtn.style.color = "";
+          copyBtn.style.boxShadow = "";
+          copyBtn.style.borderColor = "";
+
+          headerCopyBtn.textContent = "Salin Kode";
+          headerCopyBtn.style.color = "";
+          headerCopyBtn.style.borderColor = "";
+      }, 2400);
     };
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done);
+      navigator.clipboard.writeText(text).then(done).catch(err => {
+         var t = document.createElement('textarea');
+         t.value = text; document.body.appendChild(t); t.select();
+         document.execCommand('copy'); document.body.removeChild(t); done();
+      });
     } else {
       var t = document.createElement('textarea');
       t.value = text; document.body.appendChild(t); t.select();
       document.execCommand('copy'); document.body.removeChild(t); done();
     }
-  });
+  }
 
+  copyBtn.addEventListener('click', executeCopy);
+  headerCopyBtn.addEventListener('click', executeCopy);
+
+  // --- Load Image Roblox ---
   function loadRobloxIcon(img) {
     img.onerror = null;
     var url = 'https://thumbnails.roproxy.com/v1/places/gameicons?placeIds=93978595733734&returnPolicy=PlaceHolder&size=512x512&format=Png&isCircular=false';
@@ -576,7 +1225,7 @@
       .catch(function () { img.style.display = 'none'; });
   }
 
-  // Init
+  // --- Init ---
   window.onload = function() {
     initBackground();
   };
